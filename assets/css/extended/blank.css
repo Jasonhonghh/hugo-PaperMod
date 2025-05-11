@@ -7,6 +7,25 @@ Read https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#bundling-custom-cs
      font-family: "LXGW WenKai Screen", sans-serif !important;
  }
  ​
- code {
-     font-family: "LXGW WenKai Screen", sans-serif;
- }
+/* 行内代码字体样式 */
+code {
+    font-family: 'Poppins', 'Comic Sans MS', monospace;
+    font-size: 1.2rem; /* 字体大小 */
+    font-weight: 700; /* 加粗 */
+    background-color: #f5f5f5; /* 背景色 */
+    color: #d63384; /* 字体颜色 */
+    padding: 0.2em 0.4em; /* 内边距 */
+    border-radius: 4px; /* 圆角边框 */
+}
+
+/* 代码块字体样式 */
+pre, pre code {
+    font-family: 'Poppins', 'Comic Sans MS', monospace;
+    font-size: 1.2rem; /* 字体大小 */
+    font-weight: 700; /* 加粗 */
+    background-color: #f5f5f5; /* 背景色 */
+    color: #333; /* 字体颜色 */
+    padding: 1em; /* 内边距 */
+    border-radius: 6px; /* 圆角边框 */
+    overflow-x: auto; /* 水平滚动 */
+}
