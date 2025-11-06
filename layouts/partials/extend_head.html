@@ -1,20 +1,20 @@
-<html>
-<head>
-  <link rel="stylesheet" href="https://cdn.staticfile.org/lxgw-wenkai-webfont/1.6.0/style.css" />
-  <link rel="stylesheet" href="https://cdn.staticfile.org/lxgw-wenkai-screen-webfont/1.6.0/style.css" />
-  <style>
-    body {
+<link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/lxgw-wenkai-screen-webfont/1.7.0/style.min.css" />
+<link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/lxgw-wenkai-webfont/1.7.0/style.min.css" />
+<style>
+  /* 2. 使用 @font-face 定义字体 */
+  @font-face {
+    font-family: 'LXGW WenKai Screen'; /* 定义一个字体名称 */
+    src: url('https://cdn.staticfile.net/lxgw-wenkai-screen-webfont/1.7.0/files/lxgwwenkaigbscreen-subset-97.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap; /* 确保文本始终可见 */
+  }
+
+  /* 3. 在 body 中应用这个字体，并设置一个通用备用字体 */
+  body {
+      /* 原版 */
       font-family: "LXGW WenKai", sans-serif;
-      /* Lite version */
-      font-family: "LXGW WenKai Lite", sans-serif;
-      /* TC version */
-      font-family: "LXGW WenKai TC", sans-serif;
-      /* Screen version */
+      /* 屏幕优化版 */
       font-family: "LXGW WenKai Screen", sans-serif;
-    }
-  </style>
-</head>
-<body>
-  <!-- blablabla -->
-</body>
-</html>
+  }
+</style>
