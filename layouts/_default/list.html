@@ -47,8 +47,19 @@
 
 {{- $paginator := .Paginate $pages }}
 
+{{- if .IsHome }}
+<div class="home-page">
+{{- end }}
+
 {{- if and .IsHome site.Params.homeInfoParams (eq $paginator.PageNumber 1) }}
 {{- partial "home_info.html" . }}
+{{- end }}
+
+{{- if .IsHome }}
+<header class="home-section-heading home-posts-heading">
+  <h2>{{ if eq $paginator.PageNumber 1 }}最新文章{{ else }}更多文章{{ end }}</h2>
+  <span>第 {{ $paginator.PageNumber }} / {{ $paginator.TotalPages }} 页</span>
+</header>
 {{- end }}
 
 {{- $term := .Data.Term }}
@@ -63,7 +74,7 @@
 {{- $class = "post-entry tag-entry" }}
 {{- end }}
 
-<article class="{{ $class }}">
+<article class="{{ $class }}{{ if $.IsHome }} home-post-entry{{ end }}">
   {{- $isHidden := (.Param "cover.hiddenInList") | default (.Param "cover.hidden") | default false }}
   {{- partial "cover.html" (dict "cxt" . "IsSingle" false "isHidden" $isHidden) }}
   <header class="entry-header">
@@ -71,7 +82,7 @@
       {{- .Title }}
       {{- if .Draft }}
       <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="-960 960 960" fill="currentColor">
           <path
             d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
         </svg>
@@ -98,7 +109,7 @@
   <nav class="pagination">
     {{- if $paginator.HasPrev }}
     <a class="prev" href="{{ $paginator.Prev.URL | absURL }}">
-      «&nbsp;{{ i18n "prev_page" }}&nbsp;
+      <span aria-hidden="true">←</span>&nbsp;上一页&nbsp;
       {{- if (.Param "ShowPageNums") }}
       {{- sub $paginator.PageNumber 1 }}/{{ $paginator.TotalPages }}
       {{- end }}
@@ -106,16 +117,28 @@
     {{- end }}
     {{- if $paginator.HasNext }}
     <a class="next" href="{{ $paginator.Next.URL | absURL }}">
-      {{- i18n "next_page" }}&nbsp;
+      下一页&nbsp;
       {{- if (.Param "ShowPageNums") }}
-      {{- add 1 $paginator.PageNumber }}/{{ $paginator.TotalPages }}
-      {{- end }}&nbsp;»
+      {{- add 1 $paginator.PageNumber }}/{{ $paginator.TotalPages }}&nbsp;
+      {{- end }}<span aria-hidden="true">→</span>
     </a>
     {{- end }}
   </nav>
 </footer>
 {{- end }}
 
+{{- if .IsHome }}</div>{{ end }}
+
 {{- end }}{{/* end profileMode */}}
+
+<!-- 主页底部动态展示 -->
+{{- if .IsHome }}
+{{- partial "home_activity.html" . }}
+{{- end }}
+
+<!-- 文章列表页底部动态展示 -->
+{{- if (or (eq .Section "tech") (eq .Section "diary") (eq .Section "tips")) }}
+{{- partial "home_activity.html" . }}
+{{- end }}
 
 {{- end }}{{- /* end main */ -}}

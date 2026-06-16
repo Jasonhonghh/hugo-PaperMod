@@ -1,0 +1,54 @@
+{{- $activity := .activity -}}
+{{- $platform := .platform | default "all" -}}
+{{- $limit := .limit | default 8 -}}
+{{- $count := 0 -}}
+{{- range $item := $activity.activities -}}
+{{- if and (or (eq $platform "all") (eq $item.platform $platform)) (lt $count $limit) -}}
+{{- $itemURL := $item.url -}}
+{{- if eq $item.platform "weread" -}}
+{{- $itemURL = ($item.url | safeURL) -}}
+{{- end -}}
+<article class="activity-card activity-platform-{{ $item.platform }} activity-action-{{ $item.action }} activity-target-{{ $item.target_type | default "item" }}"{{ with $item.image }} style="--activity-image: url('{{ . }}')"{{ end }}>
+    <a class="activity-thumb" href="{{ $itemURL }}" target="_blank" rel="noopener" aria-label="{{ $item.title }}">
+        {{- if $item.image }}
+        <img src="{{ $item.image }}" alt="{{ $item.title }}" loading="lazy"{{ if eq $item.platform `douban` }} referrerpolicy="no-referrer"{{ end }}>
+        {{- else }}
+        <span>{{ $item.source_label | default $item.platform }}</span>
+        {{- end }}
+    </a>
+    <div class="activity-body">
+        <div class="activity-kicker">
+            <span>{{ $item.source_label | default $item.platform }}</span>
+            {{- with $item.action_label }}<span>{{ . }}</span>{{- end }}
+            {{- with $item.target_label }}<span>{{ . }}</span>{{- end }}
+        </div>
+        <h4 class="activity-title">
+            <a href="{{ $itemURL }}" target="_blank" rel="noopener">{{ $item.title }}</a>
+        </h4>
+        {{- with $item.summary }}
+        <p class="activity-summary">{{ . }}</p>
+        {{- end }}
+        <div class="activity-meta">
+            {{- with $item.language }}<span>{{ . }}</span>{{- end }}
+            {{- with $item.commit_count }}<span>{{ . }} commits</span>{{- end }}
+            {{- with $item.stars }}<span>{{ . }} stars</span>{{- end }}
+            {{- with $item.rating }}<span>评分 {{ . }}</span>{{- end }}
+            {{- with $item.folder }}<span>收藏夹 {{ . }}</span>{{- end }}
+            {{- with $item.author }}<span>{{ if eq $item.platform `weread` }}作者{{ else }}UP{{ end }} {{ . }}</span>{{- end }}
+            {{- with $item.read_time }}<span>本月 {{ . }}</span>{{- end }}
+            {{- range $item.reading_tags }}<span>{{ . }}</span>{{- end }}
+            {{- with $item.views }}<span>{{ . }} 播放</span>{{- end }}
+            {{- if eq $item.date_source "repo_updated" -}}
+            <span>仓库更新 {{ $item.date }}</span>
+            {{- else -}}
+            <time>{{ $item.date }}</time>
+            {{- end }}
+        </div>
+    </div>
+</article>
+{{- $count = add $count 1 -}}
+{{- end -}}
+{{- end -}}
+{{- if eq $count 0 }}
+<div class="activity-empty">暂无动态</div>
+{{- end }}

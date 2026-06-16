@@ -1,0 +1,359 @@
+{{- $ctx := .context -}}
+{{- $activity := $ctx.Site.Data.activity -}}
+{{- if $activity -}}
+{{- $heading := .heading | default "h2" -}}
+{{- $allLimit := .allLimit | default 10 -}}
+{{- $platformLimit := .platformLimit | default 6 -}}
+<style>
+.activity-section {
+    margin-top: 2.75rem;
+    padding-top: 0;
+}
+
+.activity-section-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 0.8rem;
+    padding: 0 0.5rem;
+}
+
+.activity-section-heading h2,
+.activity-section-heading h3 {
+    margin: 0;
+    color: var(--primary);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.activity-update-time {
+    margin: 0;
+    color: var(--secondary);
+    font-size: 0.72rem;
+    white-space: nowrap;
+}
+
+.activity-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 0.85rem;
+}
+
+.activity-tab {
+    padding: 0.35rem 0.78rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--entry);
+    color: var(--secondary);
+    cursor: pointer;
+    font-size: 0.78rem;
+    line-height: 1.2;
+    transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.activity-tab:hover,
+.activity-tab.active {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.activity-tab.active {
+    background: rgba(var(--primary-rgb, 59, 130, 246), 0.08);
+}
+
+.activity-list {
+    display: none;
+}
+
+.activity-list.active {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+.activity-card {
+    display: flex;
+    gap: 0.95rem;
+    align-items: start;
+    width: 100%;
+    padding: 0.78rem 0;
+}
+
+.activity-platform-github::before {
+    content: "";
+    display: block;
+    flex: 0 0 60px;
+    width: 60px;
+    min-width: 60px;
+    height: 60px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--entry) var(--activity-image) center / cover no-repeat;
+    box-sizing: border-box;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+}
+
+.activity-platform-github > .activity-thumb {
+    display: none;
+}
+
+.activity-thumb {
+    display: flex;
+    flex: 0 0 60px;
+    width: 60px;
+    min-width: 60px;
+    height: 60px;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--entry);
+    color: var(--secondary);
+    font-size: 0.7rem;
+    text-align: center;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+}
+
+.activity-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.activity-platform-bilibili .activity-thumb {
+    flex-basis: 96px;
+    width: 96px;
+    min-width: 96px;
+    height: 54px;
+}
+
+.activity-platform-douban .activity-thumb,
+.activity-platform-weread .activity-thumb {
+    flex-basis: 46px;
+    width: 46px;
+    min-width: 46px;
+    height: 66px;
+}
+
+.activity-body {
+    flex: 1 1 auto;
+    min-width: 0;
+    width: 100%;
+}
+
+.activity-kicker {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-bottom: 0.24rem;
+    color: var(--secondary);
+    font-size: 0.68rem;
+}
+
+.activity-kicker span + span::before {
+    content: "/";
+    margin-right: 0.35rem;
+    color: var(--tertiary);
+}
+
+.activity-title {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.35;
+}
+
+.activity-title a {
+    display: block;
+    color: var(--primary);
+    text-decoration: none;
+    word-break: normal;
+    overflow-wrap: anywhere;
+}
+
+.activity-title a:hover {
+    text-decoration: underline;
+}
+
+.activity-summary {
+    margin: 0.26rem 0 0;
+    color: var(--secondary);
+    font-size: 0.78rem;
+    line-height: 1.45;
+}
+
+.activity-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.5rem;
+    margin-top: 0.38rem;
+    color: var(--secondary);
+    font-size: 0.72rem;
+    font-weight: 500;
+    line-height: 1.35;
+}
+
+.activity-meta span,
+.activity-meta time {
+    white-space: nowrap;
+    opacity: 1;
+}
+
+.activity-empty {
+    padding: 1rem 0;
+    color: var(--secondary);
+    font-size: 0.82rem;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .activity-section {
+        margin-top: 2.25rem;
+        padding-top: 0;
+    }
+
+    .activity-section-heading {
+        padding-inline: 0.25rem;
+    }
+
+    .activity-card {
+        gap: 0.78rem;
+    }
+
+    .activity-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 0.2rem;
+        scrollbar-width: none;
+        scroll-snap-type: x proximity;
+    }
+
+    .activity-tabs::-webkit-scrollbar {
+        display: none;
+    }
+
+    .activity-tab {
+        flex: 0 0 auto;
+        white-space: nowrap;
+        scroll-snap-align: start;
+    }
+
+    .activity-thumb {
+        flex-basis: 52px;
+        width: 52px;
+        min-width: 52px;
+        height: 52px;
+    }
+
+    .activity-platform-bilibili .activity-thumb {
+        flex-basis: 84px;
+        width: 84px;
+        min-width: 84px;
+        height: 48px;
+    }
+
+    .activity-platform-douban .activity-thumb,
+    .activity-platform-weread .activity-thumb {
+        flex-basis: 42px;
+        width: 42px;
+        min-width: 42px;
+        height: 60px;
+    }
+
+    .activity-platform-github::before {
+        flex-basis: 52px;
+        width: 52px;
+        min-width: 52px;
+        height: 52px;
+    }
+
+    .activity-title {
+        font-size: 0.9rem;
+    }
+}
+</style>
+
+<section class="activity-section">
+    <header class="activity-section-heading">
+        {{- if eq $heading "h3" }}
+        <h3>最近动态</h3>
+        {{- else }}
+        <h2>最近动态</h2>
+        {{- end }}
+        <span class="activity-update-time">更新于 {{ $activity.last_updated }}</span>
+    </header>
+
+    <div class="activity-tabs" role="tablist" aria-label="动态平台">
+        <button class="activity-tab active" id="activity-tab-all" type="button" role="tab" aria-selected="true" aria-controls="activity-panel-all" data-platform="all">全部</button>
+        <button class="activity-tab" id="activity-tab-github" type="button" role="tab" aria-selected="false" aria-controls="activity-panel-github" tabindex="-1" data-platform="github">代码</button>
+        <button class="activity-tab" id="activity-tab-douban" type="button" role="tab" aria-selected="false" aria-controls="activity-panel-douban" tabindex="-1" data-platform="douban">豆瓣</button>
+        <button class="activity-tab" id="activity-tab-bilibili" type="button" role="tab" aria-selected="false" aria-controls="activity-panel-bilibili" tabindex="-1" data-platform="bilibili">B站</button>
+        <button class="activity-tab" id="activity-tab-weread" type="button" role="tab" aria-selected="false" aria-controls="activity-panel-weread" tabindex="-1" data-platform="weread">微信读书</button>
+    </div>
+
+    <div class="activity-list active" id="activity-panel-all" role="tabpanel" aria-labelledby="activity-tab-all" data-platform="all">
+        {{- partial "activity_items.html" (dict "activity" $activity "platform" "all" "limit" $allLimit) -}}
+    </div>
+    <div class="activity-list" id="activity-panel-github" role="tabpanel" aria-labelledby="activity-tab-github" data-platform="github" hidden>
+        {{- partial "activity_items.html" (dict "activity" $activity "platform" "github" "limit" $platformLimit) -}}
+    </div>
+    <div class="activity-list" id="activity-panel-douban" role="tabpanel" aria-labelledby="activity-tab-douban" data-platform="douban" hidden>
+        {{- partial "activity_items.html" (dict "activity" $activity "platform" "douban" "limit" $platformLimit) -}}
+    </div>
+    <div class="activity-list" id="activity-panel-bilibili" role="tabpanel" aria-labelledby="activity-tab-bilibili" data-platform="bilibili" hidden>
+        {{- partial "activity_items.html" (dict "activity" $activity "platform" "bilibili" "limit" $platformLimit) -}}
+    </div>
+    <div class="activity-list" id="activity-panel-weread" role="tabpanel" aria-labelledby="activity-tab-weread" data-platform="weread" hidden>
+        {{- partial "activity_items.html" (dict "activity" $activity "platform" "weread" "limit" $platformLimit) -}}
+    </div>
+</section>
+
+<script>
+(function() {
+    var sections = document.querySelectorAll('.activity-section');
+    sections.forEach(function(section) {
+        var tabs = section.querySelectorAll('.activity-tab');
+        var lists = section.querySelectorAll('.activity-list');
+
+        function activateTab(tab) {
+            var platform = tab.dataset.platform;
+
+            tabs.forEach(function(item) {
+                var selected = item === tab;
+                item.classList.toggle('active', selected);
+                item.setAttribute('aria-selected', selected ? 'true' : 'false');
+                item.tabIndex = selected ? 0 : -1;
+            });
+
+            lists.forEach(function(list) {
+                var selected = list.dataset.platform === platform;
+                list.classList.toggle('active', selected);
+                list.hidden = !selected;
+            });
+        }
+
+        tabs.forEach(function(tab, index) {
+            tab.addEventListener('click', function() {
+                activateTab(tab);
+            });
+
+            tab.addEventListener('keydown', function(event) {
+                var nextIndex = index;
+                if (event.key === 'ArrowRight') nextIndex = (index + 1) % tabs.length;
+                else if (event.key === 'ArrowLeft') nextIndex = (index - 1 + tabs.length) % tabs.length;
+                else if (event.key === 'Home') nextIndex = 0;
+                else if (event.key === 'End') nextIndex = tabs.length - 1;
+                else return;
+
+                event.preventDefault();
+                activateTab(tabs[nextIndex]);
+                tabs[nextIndex].focus();
+            });
+        });
+    });
+})();
+</script>
+{{- end -}}

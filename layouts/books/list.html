@@ -1,0 +1,88 @@
+{{- define "main" }}
+
+<header class="page-header">
+  <h1>{{ .Title }}</h1>
+  {{- if .Description }}
+  <div class="post-description">{{ .Description }}</div>
+  {{- end }}
+</header>
+
+{{- $books := .Pages.ByDate.Reverse }}
+{{- if not $books }}
+<div class="books-empty">
+  <p>暂无书籍数据，请稍后再来。</p>
+</div>
+{{- else }}
+<div class="books-grid">
+  {{- range $books }}
+  {{- $book := . }}
+  {{- $wereadUrl := .Params.weread_url | default (print "https://weread.qq.com/web/search/books?keyword=" (.Title | urlquery)) }}
+  <article class="book-card">
+    <a href="{{ .Permalink }}" class="book-cover-link" title="查看书籍详情">
+      {{- with .Params.cover.image }}
+      <div class="book-cover">
+        <img src="{{ . }}" alt="{{ $book.Title }}" loading="lazy">
+      </div>
+      {{- else }}
+      <div class="book-cover book-cover-placeholder">
+        <svg viewBox="0 0 120 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="120" height="160" fill="var(--tertiary)"/>
+          <text x="60" y="85" text-anchor="middle" fill="var(--secondary)" font-size="14">{{ substr .Title 0 3 }}</text>
+        </svg>
+      </div>
+      {{- end }}
+    </a>
+    <div class="book-info">
+      <div class="book-info-main">
+        <a href="{{ .Permalink }}" class="book-title-link" title="查看书籍详情">
+          <h2 class="book-title">{{ .Title }}</h2>
+        </a>
+        <div class="book-meta-line">
+          {{- with .Params.author }}<span>{{ . }}</span>{{- end }}
+          {{- with .Params.category }}<span>{{ . }}</span>{{- end }}
+          {{- with .Params.publisher }}<span>{{ . }}</span>{{- end }}
+        </div>
+        {{- if .Params.rating }}
+        <div class="book-rating">
+          {{- $ratingRaw := float .Params.rating }}
+          {{- $rating := cond (gt $ratingRaw 5.0) (div $ratingRaw 10.0) $ratingRaw }}
+          {{- range seq 5 }}
+          <span class="star{{ if le . $rating }} filled{{ end }}">★</span>
+          {{- end }}
+          <span class="rating-num">{{ printf "%.1f" $rating }}</span>
+        </div>
+        {{- end }}
+        {{- if .Params.reading_progress }}
+        <div class="book-progress">
+          <div class="progress-bar"><div class="progress-fill" style="width:{{ .Params.reading_progress }}%"></div></div>
+        </div>
+        {{- end }}
+        {{- if or .Params.read_time .Params.note_count .Params.review_count }}
+        <div class="book-stats">
+          {{- with .Params.read_time }}<span>{{ . }}</span>{{- end }}
+          {{- with .Params.note_count }}<span>{{ . }} 条划线</span>{{- end }}
+          {{- with .Params.review_count }}<span>{{ . }} 条想法</span>{{- end }}
+        </div>
+        {{- end }}
+        {{- if .Params.intro }}
+        <p class="book-excerpt">{{ .Params.intro }}</p>
+        {{- end }}
+      </div>
+      <div class="book-actions">
+        <a href="{{ .Permalink }}" class="book-detail-link">查看笔记</a>
+        <a href="{{ $wereadUrl | safeURL }}" target="_blank" rel="noopener noreferrer" class="book-weread-link" title="在微信读书中打开">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15 3 21 3 21 9"/>
+            <line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+          微信读书
+        </a>
+      </div>
+    </div>
+  </article>
+  {{- end }}
+</div>
+{{- end }}
+
+{{- end }}

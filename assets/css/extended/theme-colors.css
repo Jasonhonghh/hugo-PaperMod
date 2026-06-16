@@ -1,0 +1,557 @@
+/* ===========================================
+   黑白极简风格 - Pure Monochrome
+   blog-ui-designer @ 2026-05-01
+   =========================================== */
+
+/* 亮色模式 - Light Mode */
+:root {
+  --theme: #FFFFFF;             /* 纯白背景 */
+  --entry: #FAFAFA;             /* 微灰卡片，层次感 */
+  --content: #0A0A0A;           /* 深黑文字 */
+  --secondary: #525252;         /* 中灰次要文字 */
+  --tertiary: #E5E5E5;          /* 浅灰边框 */
+  --primary: #000000;           /* 纯黑主色 */
+  --border: #E5E5E5;            /* 边框 */
+  --code-bg: #F5F5F5;           /* 代码背景 */
+  --accent: #171717;            /* 强调色 */
+}
+
+/* 暗色模式 - Dark Mode */
+.dark {
+  --theme: #0A0A0A;             /* 深黑背景 */
+  --entry: #171717;             /* 卡片背景，层次感 */
+  --content: #FAFAFA;           /* 浅白文字 */
+  --secondary: #A3A3A3;         /* 中灰次要文字 */
+  --tertiary: #262626;          /* 深灰边框 */
+  --primary: #FFFFFF;           /* 纯白主色 */
+  --border: #262626;            /* 边框 */
+  --code-bg: #171717;           /* 代码背景 */
+  --accent: #E5E5E5;            /* 强调色 */
+}
+
+/* ===========================================
+   链接样式 - 简约高级
+   =========================================== */
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+a:hover {
+  opacity: 0.6;
+}
+
+/* 链接下划线效果 */
+.post-content a:not(.post-link) {
+  text-decoration: underline;
+  text-decoration-color: var(--border);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.2s ease;
+}
+
+.post-content a:not(.post-link):hover {
+  text-decoration-color: var(--primary);
+}
+
+/* ===========================================
+   文章阅读体验 - 极简排版
+   =========================================== */
+.post-content {
+  line-height: 1.8;
+  color: var(--content);
+  letter-spacing: 0.01em;
+}
+
+.post-content p {
+  margin-bottom: 1.25em;
+}
+
+.post-content h2 {
+  margin-top: 2.5em;
+  margin-bottom: 1em;
+  padding-bottom: 0.6em;
+  border-bottom: 1px solid var(--border);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.post-content h3 {
+  margin-top: 2em;
+  margin-bottom: 0.75em;
+  font-weight: 500;
+}
+
+/* 列表样式优化 */
+.post-content ul,
+.post-content ol {
+  margin: 1em 0;
+  padding-left: 1.5em;
+}
+
+.post-content li {
+  margin: 0.5em 0;
+}
+
+/* 引用块样式 */
+.post-content blockquote {
+  margin: 1.5em 0;
+  padding: 0.75em 1.25em;
+  border-left: 3px solid var(--primary);
+  background: var(--entry);
+  color: var(--secondary);
+  font-style: italic;
+}
+
+/* ===========================================
+   代码块样式 - 优雅简约
+   =========================================== */
+pre {
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+code {
+  border-radius: 4px;
+  padding: 0.2em 0.45em;
+  font-size: 0.9em;
+}
+
+:not(pre) > code {
+  background: var(--code-bg);
+  color: var(--content);
+  font-weight: 450;
+}
+
+/* ===========================================
+   文本选择高亮
+   =========================================== */
+::selection {
+  background: var(--primary);
+  color: var(--theme);
+}
+
+::-moz-selection {
+  background: var(--primary);
+  color: var(--theme);
+}
+
+/* ===========================================
+   极简视觉增强
+   =========================================== */
+
+/* 分隔线 */
+hr {
+  border: none;
+  height: 1px;
+  background: var(--border);
+  margin: 3em 0;
+}
+
+/* 图片处理 */
+.post-content img {
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+/* 表格优化 */
+.post-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1.5em 0;
+}
+
+.post-content th,
+.post-content td {
+  padding: 0.75em 1em;
+  border: 1px solid var(--border);
+  text-align: left;
+}
+
+.post-content th {
+  background: var(--entry);
+  font-weight: 600;
+}
+
+/* ===========================================
+   文章列表 - 简洁有序列表
+   =========================================== */
+
+/* 列表容器 - CSS 计数器 */
+.post-list {
+  counter-reset: post-counter;
+}
+
+/* 列表项基础样式 */
+.post-entry {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 0.9em 0;
+  margin: 0;
+  background: transparent;
+  border: none;
+  transition: background 0.2s ease;
+  counter-increment: post-counter;
+}
+
+.post-entry:first-child {
+  border-top: none;
+}
+
+/* 移除卡片效果 */
+.post-entry:hover {
+  background: var(--entry);
+  box-shadow: none;
+  transform: none;
+}
+
+/* 隐藏序号 - 只显示文章名和时间 */
+.post-entry::before {
+  display: none;
+}
+
+/* 标题区域 */
+.entry-header {
+  flex: 1;
+  display: flex;
+  align-items: baseline;
+}
+
+.entry-header h2 {
+  font-size: 1rem;
+  font-weight: 400;
+  margin: 0;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+/* 标题 hover 下划线 */
+.post-entry:hover .entry-header h2 {
+  text-decoration: underline;
+  text-decoration-color: var(--primary);
+  text-underline-offset: 3px;
+  color: var(--primary);
+}
+
+/* 隐藏文章列表摘要，但保留首页介绍 */
+.post-entry .entry-content {
+  display: none;
+}
+
+/* 首页介绍文字样式 */
+.first-entry .entry-content {
+  display: block !important;
+  color: var(--secondary);
+  font-size: 1rem;
+  line-height: 1.8;
+  margin-top: 1em;
+}
+
+/* 日期显示 */
+.entry-footer {
+  color: var(--secondary);
+  font-size: 0.85em;
+  white-space: nowrap;
+  margin-left: 1.5em;
+}
+
+/* 首页信息卡片 - 融入背景 */
+.first-entry {
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+  margin-bottom: 2em;
+  min-height: auto;
+}
+
+.first-entry::before {
+  display: none;
+}
+
+/* 首页标题颜色 */
+.first-entry .entry-header h1 {
+  color: var(--content);
+}
+
+/* 点击区域 */
+.entry-link {
+  cursor: pointer;
+}
+
+/* ===========================================
+   严肃简约风格 - 隐藏装饰元素
+   =========================================== */
+
+/* 隐藏站点图标 */
+.site-icon {
+  display: none;
+}
+
+/* 隐藏首页信息头像 */
+.first-entry .entry-cover {
+  display: none;
+}
+
+/* 首页信息简化 */
+.first-entry .entry-header h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5em;
+}
+
+.first-entry .entry-content {
+  display: block;
+  color: var(--secondary);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+/* 隐藏社交图标 */
+.social-icons {
+  display: none;
+}
+
+/* ===========================================
+   栏目页面 - 极简列表
+   =========================================== */
+
+/* 移除文章卡片框效果 */
+.post-entry {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 1.05em 0 !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.post-entry:first-child {
+  border-top: none !important;
+}
+
+.post-entry:last-child {
+  border-bottom: none !important;
+}
+
+/* 隐藏摘要内容 */
+.post-entry .entry-content {
+  display: none !important;
+}
+
+/* 隐藏封面图 */
+.post-entry .entry-cover {
+  display: none !important;
+}
+
+/* 隐藏文章标签 */
+.post-entry .entry-footer > span:not(:first-child) {
+  display: none;
+}
+
+/* 简化 hover 效果 */
+.post-entry:hover {
+  background: transparent !important;
+}
+
+.post-entry:active {
+  transform: none !important;
+}
+
+/* 栏目页面标题 */
+.page-header h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5em;
+  padding-bottom: 0.5em;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ===========================================
+   栏目页面 - 隐藏多余元素
+   =========================================== */
+
+/* 隐藏面包屑导航 */
+.breadcrumbs {
+  display: none !important;
+}
+
+/* 隐藏文章列表页的页脚信息 */
+.list .entry-footer {
+  display: none !important;
+}
+
+/* 只保留日期，隐藏其他元信息 */
+.post-entry .entry-footer {
+  display: block !important;
+  color: var(--secondary);
+  font-size: 0.85em;
+}
+
+/* 隐藏阅读时间 */
+.post-entry .entry-footer span[title*="min"],
+.post-entry .entry-footer span:has(svg) {
+  display: none !important;
+}
+
+/* 隐藏栏目页面标题 */
+.list .page-header {
+  display: none !important;
+}
+
+/* 隐藏RSS feed图标 */
+.list .main a[href*="/index.xml"],
+.list .main a[href*="rss"],
+.list .main a[href*="feed"] {
+  display: none !important;
+}
+
+/* 隐藏所有RSS相关元素 */
+.rss-link,
+a[title*="RSS"],
+a[title*="rss"],
+a[aria-label*="RSS"] {
+  display: none !important;
+}
+
+/* ===========================================
+   全局 - 只显示日期，隐藏其他元信息
+   =========================================== */
+
+/* 隐藏阅读时间 - 所有页面 */
+.post-meta span[title*="min"],
+.post-meta span[title*="分钟"],
+.entry-footer span[title*="min"],
+.entry-footer span[title*="分钟"],
+span.reading-time {
+  display: none !important;
+}
+
+/* 隐藏作者信息 - 所有页面 */
+.post-meta .author,
+.entry-footer .author,
+.post-meta a[href*="/author/"],
+.entry-footer a[href*="/author/"],
+.post-meta [rel="author"],
+.entry-footer [rel="author"],
+span.byline,
+span.author {
+  display: none !important;
+}
+
+/* 隐藏字数统计 */
+.post-meta span[title*="字"],
+.entry-footer span[title*="字"],
+span.word-count {
+  display: none !important;
+}
+
+/* 文章详情页 - 只保留日期 */
+.post-meta,
+.entry-footer {
+  color: var(--secondary);
+}
+
+/* 只保留第一个span（通常是日期） */
+.post-meta > span:not(:first-child),
+.entry-footer > span:not(:first-child) {
+  display: none !important;
+}
+
+/* 隐藏分隔符 */
+.post-meta > span + span::before,
+.entry-footer > span + span::before {
+  display: none;
+}
+
+/* ===========================================
+   彻底隐藏所有多余元素 - 只保留标题和日期
+   =========================================== */
+
+/* 隐藏文章摘要/summary */
+.post-entry .entry-content,
+.entry-content {
+  display: none !important;
+}
+
+/* 隐藏文章标签 */
+.post-entry .entry-footer .tags,
+.post-entry .entry-footer a[href*="/tags/"],
+.entry-tags,
+.post-tags {
+  display: none !important;
+}
+
+/* 隐藏所有svg图标及其父元素 */
+.entry-footer svg,
+.entry-footer span:has(svg),
+.post-meta svg,
+.post-meta span:has(svg) {
+  display: none !important;
+}
+
+/* 栏目列表页 - 彻底简化 */
+.list .post-entry {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+  align-items: baseline !important;
+  padding: 0.75em 0 !important;
+}
+
+/* 栏目列表页 - 只显示标题 */
+.list .post-entry .entry-header {
+  flex: 1;
+}
+
+.list .post-entry .entry-header h2 {
+  font-size: 1rem;
+  font-weight: 400;
+  margin: 0;
+}
+
+/* 栏目列表页 - 显示日期 */
+.list .post-entry .entry-footer {
+  display: block !important;
+  font-size: 0.85em;
+  color: var(--secondary);
+  margin-left: 1em;
+}
+
+/* 只保留第一个span（日期），隐藏其他span */
+.entry-footer > span:first-child {
+  display: inline !important;
+}
+
+/* 隐藏entry-footer中除了第一个span以外的所有内容 */
+.entry-footer > span:not(:first-child) {
+  display: none !important;
+}
+
+/* 隐藏分隔符 · */
+.entry-footer {
+  font-size: 0;
+}
+
+.entry-footer > span:first-child {
+  font-size: 0.85em;
+}
+
+/* 全局 - 文章列表只显示日期 */
+.post-entry .entry-footer {
+  display: block !important;
+  color: var(--secondary);
+  font-size: 0;
+}
+
+.post-entry .entry-footer > span:first-child {
+  display: inline !important;
+  font-size: 0.85em;
+}
+
+.post-entry .entry-footer > *:not(span:first-child) {
+  display: none !important;
+}

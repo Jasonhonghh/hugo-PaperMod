@@ -1,0 +1,549 @@
+/* ===========================================
+   读书页面 - 横版阅读卡片
+   =========================================== */
+
+/* section description */
+.page-header .post-description {
+    font-size: 0.9rem;
+    color: var(--secondary);
+    margin-top: 0.3rem;
+}
+
+/* ---- List ---- */
+.books-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+/* ---- Card ---- */
+.book-card {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    background: var(--entry);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    padding: 0.9rem;
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.book-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--secondary);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+/* ---- Cover ---- */
+.book-cover-link {
+    display: block;
+    flex: 0 0 86px;
+    width: 86px;
+    overflow: hidden;
+    align-self: flex-start;
+}
+.book-cover {
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    background: var(--tertiary);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+}
+.book-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.35s ease;
+}
+.book-card:hover .book-cover img {
+    transform: scale(1.04);
+}
+.book-cover-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.book-cover-placeholder svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* ---- Info ---- */
+.book-info {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    flex: 1;
+    min-width: 0;
+    padding: 0.05rem 0 0;
+}
+.book-info-main {
+    flex: 1;
+    min-width: 0;
+}
+.book-title-link {
+    display: block;
+    text-decoration: none;
+    color: var(--primary);
+}
+.book-title-link:hover {
+    opacity: 0.7;
+}
+.book-title {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.book-meta-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.55rem;
+    margin: 0.25rem 0 0.45rem;
+    color: var(--secondary);
+    font-size: 0.74rem;
+    line-height: 1.45;
+}
+.book-meta-line span {
+    min-width: 0;
+}
+.book-meta-line span + span::before {
+    content: "/";
+    margin-right: 0.55rem;
+    color: var(--tertiary);
+}
+.book-author {
+    font-size: 0.74rem;
+    color: var(--secondary);
+    margin: 0.15rem 0 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ---- Rating ---- */
+.book-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.08rem;
+    margin-bottom: 0.4rem;
+}
+.book-rating .star {
+    font-size: 0.68rem;
+    color: var(--tertiary);
+    line-height: 1;
+}
+.book-rating .star.filled {
+    color: var(--primary);
+}
+.book-rating .rating-num {
+    font-size: 0.68rem;
+    color: var(--secondary);
+    margin-left: 0.2rem;
+}
+
+/* ---- Progress ---- */
+.book-progress {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    max-width: 260px;
+}
+.progress-bar {
+    flex: 1;
+    height: 4px;
+    background: var(--tertiary);
+    border-radius: 2px;
+    overflow: hidden;
+}
+.progress-fill {
+    height: 100%;
+    background: var(--primary);
+    border-radius: 2px;
+    transition: width 0.5s ease;
+}
+.progress-text {
+    font-size: 0.68rem;
+    color: var(--secondary);
+    white-space: nowrap;
+}
+
+.book-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.65rem;
+    margin-top: 0.5rem;
+    color: var(--secondary);
+    font-size: 0.7rem;
+    line-height: 1.35;
+}
+
+.book-stats span + span::before {
+    content: "/";
+    margin-right: 0.65rem;
+    color: var(--tertiary);
+}
+
+.book-excerpt {
+    margin: 0.65rem 0 0;
+    color: var(--secondary);
+    font-size: 0.78rem;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ---- WeRead link on card ---- */
+.book-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.45rem;
+    flex: 0 0 auto;
+}
+.book-detail-link,
+.book-weread-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    justify-content: center;
+    color: var(--secondary);
+    text-decoration: none;
+    min-height: 30px;
+    padding: 0.35rem 0.65rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.72rem;
+    line-height: 1;
+    white-space: nowrap;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+}
+.book-detail-link:hover,
+.book-weread-link:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+    background: var(--tertiary);
+}
+.book-weread-link svg {
+    width: 14px;
+    height: 14px;
+}
+
+/* ---- Empty state ---- */
+.books-empty {
+    text-align: center;
+    padding: 4rem 1rem;
+    color: var(--secondary);
+    font-size: 0.9rem;
+}
+
+/* ===========================================
+   书籍详情页
+   =========================================== */
+
+/* ---- Header ---- */
+.book-single {
+    max-width: 720px;
+    margin: 0 auto;
+}
+.book-header {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+}
+.book-cover-large {
+    flex: 0 0 200px;
+    width: 200px;
+}
+.book-cover-large img {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+.book-meta {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.35rem;
+}
+.book-meta .book-title {
+    font-size: 1.5rem;
+    -webkit-line-clamp: unset;
+    overflow: visible;
+    white-space: normal;
+    margin: 0;
+}
+.book-meta .book-author {
+    font-size: 1rem;
+    color: var(--secondary);
+    margin: 0;
+    white-space: normal;
+}
+.book-meta .book-publisher,
+.book-meta .book-category,
+.book-meta .book-read-time {
+    font-size: 0.8rem;
+    color: var(--secondary);
+    margin: 0;
+}
+
+/* Rating in detail */
+.book-rating-detail {
+    display: flex;
+    align-items: center;
+    gap: 0.08rem;
+    margin: 0.1rem 0;
+}
+.book-rating-detail .star {
+    font-size: 0.85rem;
+    color: var(--tertiary);
+    line-height: 1;
+}
+.book-rating-detail .star.filled {
+    color: var(--primary);
+}
+.book-rating-detail .rating-num {
+    font-size: 0.8rem;
+    color: var(--secondary);
+    margin-left: 0.35rem;
+}
+
+/* Progress in detail */
+.book-progress-detail {
+    max-width: 260px;
+    margin: 0.1rem 0;
+}
+.book-progress-detail .progress-bar {
+    height: 4px;
+}
+
+/* WeRead link */
+.weread-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--secondary);
+    text-decoration: none;
+    font-size: 0.78rem;
+    margin-top: 0.35rem;
+    padding: 0.35rem 0;
+    transition: color 0.15s ease;
+    width: fit-content;
+}
+.weread-link:hover {
+    color: var(--primary);
+}
+.weread-link svg {
+    flex-shrink: 0;
+}
+
+/* ---- Sections ---- */
+.book-intro h2,
+.book-review h2,
+.book-highlights h2,
+.book-notes h2 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin: 2rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--primary);
+}
+
+/* Intro */
+.intro-content {
+    font-size: 0.88rem;
+    line-height: 1.75;
+    color: var(--secondary);
+}
+
+/* Review */
+.review-content {
+    font-size: 0.92rem;
+    line-height: 1.8;
+    color: var(--content);
+}
+
+/* ---- Highlights ---- */
+.highlight-item {
+    margin-bottom: 1rem;
+    padding: 0.85rem 1rem;
+    background: var(--entry);
+    border-left: 3px solid var(--primary);
+    border-radius: 0 6px 6px 0;
+}
+.highlight-item blockquote {
+    margin: 0 0 0.4rem;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--content);
+    font-style: normal;
+    font-size: 0.9rem;
+    line-height: 1.75;
+}
+.highlight-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.7rem;
+    color: var(--secondary);
+}
+
+/* ---- Notes ---- */
+.note-item {
+    margin-bottom: 0.85rem;
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid var(--tertiary);
+}
+.note-item:last-child {
+    border-bottom: none;
+}
+.note-text {
+    margin: 0 0 0.35rem;
+    font-size: 0.9rem;
+    line-height: 1.75;
+    color: var(--content);
+}
+.note-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.7rem;
+    color: var(--secondary);
+}
+.note-star {
+    color: var(--primary);
+    font-weight: 500;
+}
+
+/* ---- Empty ---- */
+.book-empty {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--secondary);
+    font-size: 0.9rem;
+}
+
+/* ===========================================
+   移动端响应式
+   =========================================== */
+@media (max-width: 768px) {
+    .books-grid {
+        gap: 0.8rem;
+    }
+    .book-card {
+        gap: 0.78rem;
+        padding: 0.75rem;
+        transform: none;
+    }
+    .book-card:hover {
+        transform: none;
+        box-shadow: none;
+    }
+    .book-cover-link {
+        flex-basis: 68px;
+        width: 68px;
+    }
+    .book-info {
+        flex-direction: column;
+        gap: 0.65rem;
+        padding: 0;
+    }
+    .book-title {
+        font-size: 0.86rem;
+    }
+    .book-meta-line {
+        font-size: 0.68rem;
+        margin-bottom: 0.35rem;
+    }
+    .book-rating {
+        margin-bottom: 0.35rem;
+    }
+    .book-progress {
+        max-width: 100%;
+    }
+    .book-stats {
+        font-size: 0.66rem;
+        margin-top: 0.45rem;
+    }
+    .book-excerpt {
+        display: none;
+    }
+    .book-actions {
+        flex-direction: row;
+        align-items: center;
+        gap: 0.4rem;
+    }
+    .book-detail-link,
+    .book-weread-link {
+        min-height: 28px;
+        padding: 0.32rem 0.55rem;
+        font-size: 0.68rem;
+    }
+
+    .book-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 1.2rem;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1.5rem;
+    }
+    .book-cover-large {
+        flex: 0 0 auto;
+        width: 150px;
+    }
+    .book-meta {
+        align-items: center;
+    }
+    .book-meta .book-title {
+        font-size: 1.25rem;
+    }
+    .book-progress-detail {
+        max-width: 200px;
+    }
+    .book-single {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 400px) {
+    .books-grid {
+        gap: 0.7rem;
+    }
+    .book-card {
+        padding: 0.65rem;
+        gap: 0.65rem;
+    }
+    .book-cover-link {
+        flex-basis: 58px;
+        width: 58px;
+    }
+    .book-title {
+        font-size: 0.8rem;
+    }
+    .book-meta-line {
+        font-size: 0.64rem;
+    }
+    .book-stats {
+        display: none;
+    }
+    .book-detail-link,
+    .book-weread-link {
+        padding-inline: 0.45rem;
+    }
+}

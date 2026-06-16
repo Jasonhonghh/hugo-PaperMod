@@ -1,0 +1,278 @@
+/* ===========================================
+   字体和间距优化 - Typography Optimization
+   =========================================== */
+
+/* ===========================================
+   全局字体设置
+   =========================================== */
+:root {
+    --font-size-base: 16px;
+    --line-height-base: 1.7;
+    --line-height-heading: 1.3;
+}
+
+/* ===========================================
+   文章正文优化
+   =========================================== */
+.post-content {
+    font-size: 0.95rem;
+    line-height: 1.75;
+    letter-spacing: 0.02em;
+    word-spacing: 0.05em;
+}
+
+.post-content p {
+    margin-top: 0;
+    margin-bottom: 1.2em;
+    line-height: 1.75;
+}
+
+/* 标题字体优化 */
+.post-content h1 {
+    font-size: 1.8rem;
+    line-height: 1.3;
+    margin-top: 1.8em;
+    margin-bottom: 0.8em;
+}
+
+.post-content h2 {
+    font-size: 1.5rem;
+    line-height: 1.35;
+    margin-top: 1.6em;
+    margin-bottom: 0.7em;
+}
+
+.post-content h3 {
+    font-size: 1.25rem;
+    line-height: 1.4;
+    margin-top: 1.4em;
+    margin-bottom: 0.6em;
+}
+
+.post-content h4 {
+    font-size: 1.1rem;
+    line-height: 1.45;
+    margin-top: 1.2em;
+    margin-bottom: 0.5em;
+}
+
+.post-content h5,
+.post-content h6 {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+
+/* 列表优化 */
+.post-content ul,
+.post-content ol {
+    margin-top: 0.5em;
+    margin-bottom: 1em;
+    padding-left: 1.5em;
+}
+
+.post-content li {
+    margin-bottom: 0.4em;
+    line-height: 1.65;
+}
+
+/* 引用优化 */
+.post-content blockquote {
+    margin: 1em 0;
+    padding: 0.5em 1em;
+    font-size: 0.95em;
+    line-height: 1.7;
+}
+
+/* 代码优化 */
+.post-content code {
+    font-size: 0.9em;
+    padding: 0.15em 0.4em;
+}
+
+.post-content pre {
+    margin: 1em 0;
+    padding: 1em;
+    font-size: 0.85rem;
+    line-height: 1.6;
+}
+
+/* 链接优化 */
+.post-content a {
+    padding-bottom: 0.1em;
+}
+
+/* ===========================================
+   文章标题和元信息优化
+   =========================================== */
+.post-title {
+    font-size: 2rem;
+    line-height: 1.25;
+    margin-bottom: 0.5em;
+}
+
+.post-description {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1em;
+}
+
+.post-meta {
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* ===========================================
+   首页文章列表优化
+   =========================================== */
+.entry-header h2 {
+    font-size: 1.1rem;
+    line-height: 1.4;
+}
+
+.entry-content p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.entry-footer {
+    font-size: 0.85rem;
+}
+
+/* ===========================================
+   首页信息卡片优化
+   =========================================== */
+.first-entry .entry-header h1 {
+    font-size: 1.8rem;
+    line-height: 1.3;
+}
+
+.first-entry .entry-content {
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+/* ===========================================
+   移动端字体优化
+   =========================================== */
+@media (max-width: 768px) {
+    :root {
+        --font-size-base: 15px;
+    }
+    
+    .post-content {
+        font-size: 0.92rem;
+        line-height: 1.72;
+        letter-spacing: 0.01em;
+    }
+    
+    .post-content p {
+        margin-bottom: 1.1em;
+        line-height: 1.72;
+    }
+    
+    .post-content h1 {
+        font-size: 1.6rem;
+        margin-top: 1.5em;
+        margin-bottom: 0.7em;
+    }
+    
+    .post-content h2 {
+        font-size: 1.35rem;
+        margin-top: 1.4em;
+        margin-bottom: 0.6em;
+    }
+    
+    .post-content h3 {
+        font-size: 1.15rem;
+        margin-top: 1.2em;
+        margin-bottom: 0.5em;
+    }
+    
+    .post-content h4 {
+        font-size: 1.05rem;
+        margin-top: 1em;
+        margin-bottom: 0.4em;
+    }
+    
+    .post-title {
+        font-size: 1.65rem;
+        line-height: 1.3;
+    }
+    
+    .post-description {
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+    
+    .post-content li {
+        margin-bottom: 0.35em;
+        line-height: 1.6;
+    }
+    
+    .post-content ul,
+    .post-content ol {
+        padding-left: 1.3em;
+    }
+    
+    .post-content pre {
+        font-size: 0.82rem;
+        padding: 0.8em;
+        line-height: 1.55;
+    }
+    
+    .post-content blockquote {
+        font-size: 0.92em;
+        padding: 0.4em 0.8em;
+    }
+}
+
+/* ===========================================
+   超小屏幕优化 (< 480px)
+   =========================================== */
+@media (max-width: 480px) {
+    :root {
+        --font-size-base: 14px;
+    }
+    
+    .post-content {
+        font-size: 0.9rem;
+        line-height: 1.7;
+    }
+    
+    .post-content p {
+        margin-bottom: 1em;
+    }
+    
+    .post-content h1 {
+        font-size: 1.45rem;
+    }
+    
+    .post-content h2 {
+        font-size: 1.25rem;
+    }
+    
+    .post-content h3 {
+        font-size: 1.1rem;
+    }
+    
+    .post-title {
+        font-size: 1.5rem;
+    }
+    
+    .post-content pre {
+        font-size: 0.8rem;
+    }
+}
+
+/* ===========================================
+   暗色模式优化
+   =========================================== */
+@media (prefers-color-scheme: dark) {
+    .post-content {
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}

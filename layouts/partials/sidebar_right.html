@@ -1,0 +1,52 @@
+{{- $posts := where .Site.RegularPages "Type" "in" (slice "tech" "diary" "tips") -}}
+<aside class="sidebar-right-container">
+    <div class="sidebar-right">
+        <!-- 文章信息区 -->
+        <div class="sidebar-section article-info">
+            <h3 class="sidebar-title">文章信息</h3>
+            <div class="info-item">
+                <span class="info-label">作者</span>
+                <span class="info-value">{{ .Site.Params.author | default "Hong" }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">发布</span>
+                <span class="info-value">{{ .Date.Format "2006-01-02" }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">阅读</span>
+                <span class="info-value">{{ math.Round (div (countwords .Content) 400.0) }} 分钟</span>
+            </div>
+            {{- with .Params.tags }}
+            <div class="info-item tags-item">
+                <span class="info-label">标签</span>
+                <div class="info-tags">
+                    {{- range first 3 . }}
+                    <a href="{{ "tags/" | relLangURL }}{{ . | urlize }}/" class="tag-link">{{ . }}</a>
+                    {{- end }}
+                </div>
+            </div>
+            {{- end }}
+        </div>
+
+        <!-- 最近文章 -->
+        {{- $recent := slice -}}
+        {{- range first 10 ($posts.ByDate.Reverse) -}}
+            {{- if ne .Permalink $.Permalink -}}
+                {{- $recent = $recent | append . -}}
+            {{- end -}}
+        {{- end -}}
+        {{- if gt (len $recent) 0 }}
+        <div class="sidebar-section recent-posts">
+            <h3 class="sidebar-title">最近文章</h3>
+            <ul class="post-list">
+                {{- range first 3 $recent }}
+                <li class="post-item">
+                    <a href="{{ .Permalink }}" class="post-link">{{ .Title }}</a>
+                    <span class="post-date">{{ .Date.Format "2006-01-02" }}</span>
+                </li>
+                {{- end }}
+            </ul>
+        </div>
+        {{- end }}
+    </div>
+</aside>

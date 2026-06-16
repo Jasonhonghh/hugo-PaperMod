@@ -1,0 +1,6 @@
+{{ if .icon }}
+  <img src="{{ .icon }}" alt="{{ .title }}" class="social-icon">
+{{ else }}
+  <!-- 如果没有指定 icon，则使用默认的 SVG 图标 -->
+  <svg>...</svg>
+{{ end }}

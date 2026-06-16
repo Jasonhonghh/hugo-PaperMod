@@ -1,0 +1,105 @@
+{{- define "main" }}
+
+{{- $wereadUrl := .Params.weread_url | default (print "https://weread.qq.com/web/search/books?keyword=" (.Title | urlquery)) }}
+
+<article class="book-single">
+  <header class="book-header">
+    {{- with .Params.cover.image }}
+    <div class="book-cover-large">
+      <img src="{{ . }}" alt="{{ $.Title }}">
+    </div>
+    {{- end }}
+    <div class="book-meta">
+      <h1 class="book-title">{{ .Title }}</h1>
+      <p class="book-author">{{ .Params.author }}</p>
+      {{- if .Params.publisher }}
+      <p class="book-publisher">{{ .Params.publisher }}{{ if .Params.isbn }} · ISBN {{ .Params.isbn }}{{ end }}</p>
+      {{- end }}
+      {{- if .Params.category }}
+      <p class="book-category">{{ .Params.category }}</p>
+      {{- end }}
+      {{- if .Params.rating }}
+      <div class="book-rating-detail">
+        {{- $ratingRaw := float .Params.rating }}
+        {{- $rating := cond (gt $ratingRaw 5.0) (div $ratingRaw 10.0) $ratingRaw }}
+        {{- range seq 5 }}
+        <span class="star{{ if le . $rating }} filled{{ end }}">★</span>
+        {{- end }}
+        <span class="rating-num">{{ printf "%.1f" $rating }}</span>
+      </div>
+      {{- end }}
+      {{- if .Params.read_time }}
+      <p class="book-read-time">阅读时长：{{ .Params.read_time }}</p>
+      {{- end }}
+      {{- if .Params.reading_progress }}
+      <div class="book-progress-detail">
+        <div class="progress-bar"><div class="progress-fill" style="width:{{ .Params.reading_progress }}%"></div></div>
+      </div>
+      {{- end }}
+      <a href="{{ $wereadUrl | safeURL }}" target="_blank" rel="noopener noreferrer" class="weread-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+          <polyline points="15 3 21 3 21 9"/>
+          <line x1="10" y1="14" x2="21" y2="3"/>
+        </svg>
+        在微信读书中打开
+      </a>
+    </div>
+  </header>
+
+  {{- if .Params.intro }}
+  <section class="book-intro">
+    <h2>内容简介</h2>
+    <div class="intro-content">{{ .Params.intro | markdownify }}</div>
+  </section>
+  {{- end }}
+
+  {{- if .Params.review_text }}
+  <section class="book-review">
+    <h2>我的书评{{ if .Params.review_star }} · {{ .Params.review_star }}星{{ end }}</h2>
+    <div class="review-content">{{ .Params.review_text | markdownify }}</div>
+  </section>
+  {{- end }}
+
+  {{- $highlights := .Params.highlights }}
+  {{- if $highlights }}
+  <section class="book-highlights">
+    <h2>划线 · {{ len $highlights }}</h2>
+    {{- range $highlights }}
+    <div class="highlight-item">
+      <blockquote>{{ .text }}</blockquote>
+      <div class="highlight-meta">
+        {{- with .chapter }}<span class="highlight-chapter">{{ . }}</span>{{ end }}
+        {{- with .date }}<time class="highlight-date">{{ . }}</time>{{ end }}
+      </div>
+    </div>
+    {{- end }}
+  </section>
+  {{- end }}
+
+  {{- $notes := .Params.notes }}
+  {{- if $notes }}
+  <section class="book-notes">
+    <h2>想法 · {{ len $notes }}</h2>
+    {{- range $notes }}
+    <div class="note-item">
+      <p class="note-text">{{ .text }}</p>
+      <div class="note-meta">
+        {{- with .chapter }}<span class="note-chapter">{{ . }}</span>{{ end }}
+        {{- with .date }}<time class="note-date">{{ . }}</time>{{ end }}
+        {{- if .star }}<span class="note-star">★{{ .star }}</span>{{ end }}
+      </div>
+    </div>
+    {{- end }}
+  </section>
+  {{- end }}
+
+  {{- if and (not .Params.review_text) (not $highlights) (not $notes) }}
+  <div class="book-empty">
+    <p>暂无笔记和划线内容。</p>
+    <a href="{{ $wereadUrl | safeURL }}" target="_blank" rel="noopener noreferrer" class="weread-link">在微信读书中查看此书 →</a>
+  </div>
+  {{- end }}
+</article>
+
+{{- end }}
