@@ -1,5 +1,5 @@
 /* Homepage layout */
-.main:has(.home-page) {
+.main:has(.list-page) {
     max-width: calc(780px + var(--gap) * 2);
     padding-top: 18px;
 }
@@ -131,7 +131,7 @@
 }
 
 @media (max-width: 768px) {
-    .main:has(.home-page) {
+    .main:has(.list-page) {
         padding-top: 8px;
     }
 

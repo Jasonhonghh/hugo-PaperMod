@@ -47,9 +47,7 @@
 
 {{- $paginator := .Paginate $pages }}
 
-{{- if .IsHome }}
-<div class="home-page">
-{{- end }}
+<div class="list-page{{ if .IsHome }} home-page{{ end }}">
 
 {{- if and .IsHome site.Params.homeInfoParams (eq $paginator.PageNumber 1) }}
 {{- partial "home_info.html" . }}
@@ -127,7 +125,7 @@
 </footer>
 {{- end }}
 
-{{- if .IsHome }}</div>{{ end }}
+</div>
 
 {{- end }}{{/* end profileMode */}}
 
