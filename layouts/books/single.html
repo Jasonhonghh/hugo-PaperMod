@@ -21,6 +21,10 @@
     <div class="book-header-grid">
       {{- with .Params.cover.image }}
       <div class="book-cover-large"><img src="{{ . }}" alt="{{ $.Title }}"></div>
+      {{- else }}
+      <div class="book-cover-large book-cover-placeholder-large">
+        <span>{{ substr .Title 0 3 }}</span>
+      </div>
       {{- end }}
 
       <div class="book-meta">

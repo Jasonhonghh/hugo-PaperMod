@@ -469,6 +469,18 @@
     border-radius: 0.65rem;
     box-shadow: 0 12px 25px rgba(15, 23, 42, 0.1);
 }
+.book-cover-placeholder-large {
+    display: grid;
+    aspect-ratio: 3 / 4;
+    place-items: center;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 0.65rem;
+    background: var(--code-bg);
+    color: var(--secondary);
+    font-size: 1rem;
+    text-align: center;
+}
 .book-meta {
     display: flex;
     min-width: 0;
@@ -547,6 +559,9 @@
     gap: 1rem;
     margin-bottom: 1rem;
 }
+.book-overview-sections:has(> :only-child) {
+    grid-template-columns: 1fr;
+}
 .book-section {
     min-width: 0;
     margin-bottom: 1rem;
@@ -561,8 +576,7 @@
     justify-content: space-between;
     gap: 1rem;
     margin-bottom: 0.75rem;
-    padding-bottom: 0.55rem;
-    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.1rem;
 }
 .book-section-heading h2 {
     margin: 0;
@@ -643,8 +657,10 @@
     display: grid;
     grid-template-columns: 1.35rem minmax(0, 1fr);
     gap: 0.55rem;
-    padding: 0.7rem 0;
-    border-top: 1px solid var(--border);
+    padding: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 0.55rem;
+    background: var(--entry);
 }
 .highlight-index {
     display: grid;
