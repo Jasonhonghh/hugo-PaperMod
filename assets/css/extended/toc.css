@@ -51,7 +51,7 @@
     margin: 0;
 }
 
-.active {
+.toc .inner a.active {
     font-size: 110%;
     font-weight: 600;
 }
