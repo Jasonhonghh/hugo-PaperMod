@@ -33,6 +33,12 @@
     margin-top: 0;
     margin-bottom: 1.2em;
     line-height: 1.75;
+    text-indent: 2em;
+}
+
+.post-content li p,
+.post-content blockquote p {
+    text-indent: 0;
 }
 
 /* 标题字体优化 */
