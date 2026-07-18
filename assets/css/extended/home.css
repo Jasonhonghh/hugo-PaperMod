@@ -12,7 +12,6 @@
     min-height: 0;
     margin: 18px 0 24px;
     padding: 0 2px 18px;
-    border-bottom: 1px solid var(--border);
 }
 
 .home-page .home-info .entry-header h1:empty,
@@ -40,7 +39,6 @@
     gap: 24px;
     margin-bottom: 4px;
     padding: 0 2px 8px;
-    border-bottom: 1px solid var(--border);
 }
 
 .home-section-heading h2 {
@@ -63,11 +61,10 @@
     align-items: center !important;
     gap: 22px;
     min-height: 42px;
-    margin: 0 !important;
-    padding: 9px 2px !important;
+    margin: 3px 0 !important;
+    padding: 11px 10px !important;
     border: 0 !important;
-    border-bottom: 1px solid var(--border) !important;
-    border-radius: 0 !important;
+    border-radius: 10px !important;
     background: transparent !important;
     transition: background-color 0.16s ease, padding-left 0.16s ease !important;
 }
@@ -155,7 +152,7 @@
     .home-page .home-post-entry {
         grid-template-columns: minmax(0, 1fr) !important;
         gap: 2px;
-        padding: 9px 0 !important;
+        padding: 10px 4px !important;
     }
 
     .home-page .home-post-entry .entry-footer {

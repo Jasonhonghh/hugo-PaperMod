@@ -18,3 +18,59 @@
     })
 </script>
 {{- end }}
+
+{{- if site.Params.ShowCodeCopyButtons }}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.post-content .highlight pre, .post-content > pre').forEach(function (pre) {
+            const code = pre.querySelector('code');
+            if (!code) return;
+
+            const container = pre.closest('.highlight') || pre;
+            if (container.querySelector('.copy-code')) return;
+
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'copy-code';
+            button.setAttribute('aria-label', '复制代码');
+            button.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="11" height="11" rx="2"></rect><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path></svg><span>复制</span>';
+
+            button.addEventListener('click', function () {
+                const text = code.innerText;
+                const copy = navigator.clipboard && window.isSecureContext
+                    ? navigator.clipboard.writeText(text)
+                    : copyWithFallback(text);
+
+                Promise.resolve(copy).then(function () {
+                    button.classList.add('is-copied');
+                    button.querySelector('span').textContent = '已复制';
+                    window.setTimeout(function () {
+                        button.classList.remove('is-copied');
+                        button.querySelector('span').textContent = '复制';
+                    }, 1600);
+                }).catch(function () {
+                    button.querySelector('span').textContent = '复制失败';
+                    window.setTimeout(function () {
+                        button.querySelector('span').textContent = '复制';
+                    }, 1600);
+                });
+            });
+
+            container.appendChild(button);
+        });
+
+        function copyWithFallback(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.setAttribute('readonly', '');
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            const copied = document.execCommand('copy');
+            textarea.remove();
+            return copied ? Promise.resolve() : Promise.reject();
+        }
+    });
+</script>
+{{- end }}

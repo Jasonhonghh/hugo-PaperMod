@@ -35,44 +35,6 @@
 }
 
 /* ===========================================
-   TOC 目录 - 修复绝对定位溢出
-   =========================================== */
-@media (max-width: 768px) {
-    .toc-container.wide {
-        position: relative;
-        left: auto;
-        top: auto;
-        width: 100%;
-        height: auto;
-        border-right: none;
-        margin-bottom: 1em;
-    }
-
-    .toc-container.wide .toc {
-        position: relative;
-        top: auto;
-        max-height: 50vh;
-        overflow-y: auto;
-    }
-
-    .toc .inner {
-        margin: 0;
-        padding: 10px 15px;
-        max-height: 40vh;
-    }
-
-    .toc details summary {
-        margin-inline-start: 0;
-        padding: 10px 0;
-    }
-
-    .toc li {
-        font-size: 0.9rem;
-        padding-bottom: 4px;
-    }
-}
-
-/* ===========================================
    右侧边栏 - 移动端隐藏
    =========================================== */
 @media (max-width: 768px) {
@@ -146,8 +108,8 @@
         display: block;
         max-width: 100%;
         overflow-x: auto;
-        padding: 8px;
-        font-size: 0.85em;
+        padding: 0 !important;
+        font-size: inherit;
     }
 
     .highlight {

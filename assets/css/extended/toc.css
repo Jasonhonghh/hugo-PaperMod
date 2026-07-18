@@ -12,7 +12,13 @@
     padding: 0.4em;
 }
 
+/* 目录默认隐藏，脚本确认有足够的侧边空间后才显示。 */
+.toc-container {
+    display: none;
+}
+
 .toc-container.wide {
+    display: block;
     position: absolute;
     height: 100%;
     border-right: 1px solid var(--border);
