@@ -55,15 +55,15 @@
     align-items: center;
     flex: 0 0 auto;
     gap: 0.35rem;
-    min-height: 26px;
-    padding: 0.22rem 0.35rem 0.3rem;
+    min-height: 28px;
+    padding: 0.25rem 0.42rem 0.32rem;
     border: 0;
     border-bottom: 2px solid transparent;
     border-radius: 0;
     background: transparent;
     color: var(--secondary);
     font: inherit;
-    font-size: 0.62rem;
+    font-size: 0.68rem;
     font-weight: 400;
     line-height: 1;
     cursor: pointer;
@@ -75,7 +75,7 @@
     padding: 0;
     background: transparent;
     color: var(--secondary);
-    font-size: 0.52rem;
+    font-size: 0.56rem;
     line-height: 1;
     text-align: center;
     opacity: 0.72;
@@ -83,14 +83,18 @@
 
 .activity-tab:hover,
 .activity-tab.active {
-    border-bottom-color: transparent;
-    background: transparent;
+    border-bottom-color: var(--primary);
+    background: var(--code-bg);
     color: var(--primary);
 }
 
 .activity-tab.active small {
     color: var(--primary);
     opacity: 1;
+}
+
+.activity-tab.active {
+    font-weight: 500;
 }
 
 .activity-list {
