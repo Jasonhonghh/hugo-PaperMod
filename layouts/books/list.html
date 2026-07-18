@@ -206,6 +206,7 @@
         const matchesCategory = selectedCategory === 'all' || card.dataset.category === selectedCategory;
         const shown = matchesQuery && matchesFilter && matchesCategory;
         card.hidden = !shown;
+        card.classList.toggle('is-filtered-out', !shown);
         if (shown) visible += 1;
       });
       noResults.hidden = visible !== 0;

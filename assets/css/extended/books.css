@@ -188,6 +188,10 @@
     background: var(--entry);
     transition: border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
 }
+.book-card[hidden],
+.book-card.is-filtered-out {
+    display: none !important;
+}
 .book-card:hover {
     transform: translateY(-3px);
     border-color: var(--secondary);
@@ -420,6 +424,9 @@
     color: var(--secondary);
     font-size: 0.88rem;
     text-align: center;
+}
+.books-no-results[hidden] {
+    display: none !important;
 }
 
 /* ===========================================
