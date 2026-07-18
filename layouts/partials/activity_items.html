@@ -8,7 +8,10 @@
 {{- if eq $item.platform "weread" -}}
 {{- $itemURL = ($item.url | safeURL) -}}
 {{- end -}}
-<article class="activity-card activity-platform-{{ $item.platform }} activity-action-{{ $item.action }} activity-target-{{ $item.target_type | default "item" }}"{{ with $item.image }} style="--activity-image: url('{{ . }}')"{{ end }}>
+<article class="activity-card activity-platform-{{ $item.platform }} activity-action-{{ $item.action }} activity-target-{{ $item.target_type | default "item" }}">
+    <span class="activity-platform-mark" aria-hidden="true">
+        {{- if eq $item.platform "github" }}GH{{ else if eq $item.platform "douban" }}豆{{ else if eq $item.platform "bilibili" }}B{{ else }}读{{ end -}}
+    </span>
     <a class="activity-thumb" href="{{ $itemURL }}" target="_blank" rel="noopener" aria-label="{{ $item.title }}">
         {{- if $item.image }}
         <img src="{{ $item.image }}" alt="{{ $item.title }}" loading="lazy"{{ if eq $item.platform `douban` }} referrerpolicy="no-referrer"{{ end }}>
@@ -18,7 +21,7 @@
     </a>
     <div class="activity-body">
         <div class="activity-kicker">
-            <span>{{ $item.source_label | default $item.platform }}</span>
+            <span class="activity-source">{{ $item.source_label | default $item.platform }}</span>
             {{- with $item.action_label }}<span>{{ . }}</span>{{- end }}
             {{- with $item.target_label }}<span>{{ . }}</span>{{- end }}
         </div>
@@ -45,6 +48,7 @@
             {{- end }}
         </div>
     </div>
+    <a class="activity-open-link" href="{{ $itemURL }}" target="_blank" rel="noopener" aria-label="打开动态">↗</a>
 </article>
 {{- $count = add $count 1 -}}
 {{- end -}}
