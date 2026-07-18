@@ -13,7 +13,7 @@
     margin: 0 auto;
 }
 
-/* ---- List header and overview ---- */
+/* ---- List header ---- */
 .books-page-header {
     display: flex;
     align-items: end;
@@ -46,37 +46,6 @@
     color: var(--secondary);
     font-size: 0.78rem;
     white-space: nowrap;
-}
-
-.books-overview {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 0.7rem;
-    margin-bottom: 1.6rem;
-}
-.books-stat {
-    display: flex;
-    flex-direction: column;
-    gap: 0.22rem;
-    min-height: 76px;
-    padding: 0.85rem 1rem;
-    border: 1px solid var(--border);
-    border-radius: 0.75rem;
-    background: var(--entry);
-}
-.books-stat-value {
-    color: var(--primary);
-    font-size: 1.4rem;
-    font-weight: 650;
-    line-height: 1;
-}
-.books-stat-label {
-    color: var(--secondary);
-    font-size: 0.72rem;
-}
-.books-stat-rating .books-stat-value::before {
-    content: "★ ";
-    font-size: 0.78em;
 }
 
 /* ---- Toolbar ---- */
@@ -731,17 +700,6 @@
         gap: 0.7rem;
         margin-top: 0.4rem;
     }
-    .books-overview {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 0.5rem;
-    }
-    .books-stat {
-        min-height: 64px;
-        padding: 0.7rem;
-    }
-    .books-stat-value {
-        font-size: 1.15rem;
-    }
     .books-toolbar {
         align-items: stretch;
         flex-direction: column;
@@ -827,12 +785,6 @@
 }
 
 @media (max-width: 420px) {
-    .books-overview {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    .books-stat-rating {
-        grid-column: span 2;
-    }
     .book-card {
         grid-template-columns: 62px minmax(0, 1fr);
         gap: 0.65rem;
