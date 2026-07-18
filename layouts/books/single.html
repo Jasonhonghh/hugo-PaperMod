@@ -1,105 +1,160 @@
 {{- define "main" }}
 
+{{- $progress := int (default 0 .Params.reading_progress) }}
+{{- $status := "unread" }}
+{{- $statusLabel := "未读" }}
+{{- if .Params.finished }}
+  {{- $status = "finished" }}
+  {{- $statusLabel = "已读" }}
+{{- else if gt $progress 0 }}
+  {{- $status = "reading" }}
+  {{- $statusLabel = "在读" }}
+{{- end }}
+{{- $highlights := default (slice) .Params.highlights }}
+{{- $notes := default (slice) .Params.notes }}
 {{- $wereadUrl := .Params.weread_url | default (print "https://weread.qq.com/web/search/books?keyword=" (.Title | urlquery)) }}
 
 <article class="book-single">
-  <header class="book-header">
-    {{- with .Params.cover.image }}
-    <div class="book-cover-large">
-      <img src="{{ . }}" alt="{{ $.Title }}">
-    </div>
-    {{- end }}
-    <div class="book-meta">
-      <h1 class="book-title">{{ .Title }}</h1>
-      <p class="book-author">{{ .Params.author }}</p>
-      {{- if .Params.publisher }}
-      <p class="book-publisher">{{ .Params.publisher }}{{ if .Params.isbn }} · ISBN {{ .Params.isbn }}{{ end }}</p>
+  <a href="{{ "books/" | relLangURL }}" class="book-back-link">← 返回书架</a>
+
+  <header class="book-hero">
+    <div class="book-header-grid">
+      {{- with .Params.cover.image }}
+      <div class="book-cover-large"><img src="{{ . }}" alt="{{ $.Title }}"></div>
       {{- end }}
-      {{- if .Params.category }}
-      <p class="book-category">{{ .Params.category }}</p>
-      {{- end }}
-      {{- if .Params.rating }}
-      <div class="book-rating-detail">
-        {{- $ratingRaw := float .Params.rating }}
-        {{- $rating := cond (gt $ratingRaw 5.0) (div $ratingRaw 10.0) $ratingRaw }}
-        {{- range seq 5 }}
-        <span class="star{{ if le . $rating }} filled{{ end }}">★</span>
+
+      <div class="book-meta">
+        <div class="book-card-head">
+          <span class="book-status book-status-{{ $status }}">{{ $statusLabel }}</span>
+          {{- with .Date }}<time datetime="{{ .Format "2006-01-02" }}">加入于 {{ .Format "2006-01-02" }}</time>{{ end }}
+        </div>
+        <h1 class="book-title">{{ .Title }}</h1>
+        {{- with .Params.author }}<p class="book-author">{{ . }}</p>{{ end }}
+        {{- if or .Params.publisher .Params.isbn }}
+        <p class="book-publisher">{{ .Params.publisher }}{{ if and .Params.publisher .Params.isbn }} · {{ end }}{{ with .Params.isbn }}ISBN {{ . }}{{ end }}</p>
         {{- end }}
-        <span class="rating-num">{{ printf "%.1f" $rating }}</span>
+        {{- with .Params.category }}<p class="book-category">{{ . }}</p>{{ end }}
+
+        {{- if .Params.rating }}
+        <div class="book-rating-detail" aria-label="评分 {{ .Params.rating }}">
+          {{- $ratingRaw := float .Params.rating }}
+          {{- $rating := cond (gt $ratingRaw 5.0) (div $ratingRaw 10.0) $ratingRaw }}
+          {{- range seq 5 }}<span class="star{{ if le . $rating }} filled{{ end }}">★</span>{{ end }}
+          <span class="rating-num">{{ printf "%.1f" $rating }}</span>
+        </div>
+        {{- end }}
+
+        {{- if or (eq $status "reading") (eq $status "finished") }}
+        <div class="book-progress-detail" aria-label="阅读进度 {{ $progress }}%">
+          <div class="progress-heading"><span>阅读进度</span><strong>{{ $progress }}%</strong></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:{{ $progress }}%"></div></div>
+        </div>
+        {{- end }}
+
+        <div class="book-hero-stats">
+          <span>{{ len $highlights }} 条划线</span>
+          <span>{{ len $notes }} 条想法</span>
+        </div>
+        <a href="{{ $wereadUrl | safeURL }}" target="_blank" rel="noopener noreferrer" class="weread-link">
+          在微信读书中打开 ↗
+        </a>
       </div>
-      {{- end }}
-      {{- if .Params.read_time }}
-      <p class="book-read-time">阅读时长：{{ .Params.read_time }}</p>
-      {{- end }}
-      {{- if .Params.reading_progress }}
-      <div class="book-progress-detail">
-        <div class="progress-bar"><div class="progress-fill" style="width:{{ .Params.reading_progress }}%"></div></div>
-      </div>
-      {{- end }}
-      <a href="{{ $wereadUrl | safeURL }}" target="_blank" rel="noopener noreferrer" class="weread-link">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-          <polyline points="15 3 21 3 21 9"/>
-          <line x1="10" y1="14" x2="21" y2="3"/>
-        </svg>
-        在微信读书中打开
-      </a>
     </div>
   </header>
 
-  {{- if .Params.intro }}
-  <section class="book-intro">
-    <h2>内容简介</h2>
-    <div class="intro-content">{{ .Params.intro | markdownify }}</div>
-  </section>
+  {{- if or .Params.intro .Params.review_text }}
+  <div class="book-overview-sections">
+    {{- with .Params.intro }}
+    <section class="book-section book-intro" id="book-intro">
+      <div class="book-section-heading"><h2>内容简介</h2></div>
+      <div class="intro-content">{{ . | markdownify }}</div>
+    </section>
+    {{- end }}
+    {{- with .Params.review_text }}
+    <section class="book-section book-review" id="book-review">
+      <div class="book-section-heading"><h2>我的书评</h2></div>
+      <div class="review-content">{{ . | markdownify }}</div>
+    </section>
+    {{- end }}
+  </div>
   {{- end }}
 
-  {{- if .Params.review_text }}
-  <section class="book-review">
-    <h2>我的书评{{ if .Params.review_star }} · {{ .Params.review_star }}星{{ end }}</h2>
-    <div class="review-content">{{ .Params.review_text | markdownify }}</div>
-  </section>
-  {{- end }}
-
-  {{- $highlights := .Params.highlights }}
   {{- if $highlights }}
-  <section class="book-highlights">
-    <h2>划线 · {{ len $highlights }}</h2>
-    {{- range $highlights }}
-    <div class="highlight-item">
-      <blockquote>{{ .text }}</blockquote>
-      <div class="highlight-meta">
-        {{- with .chapter }}<span class="highlight-chapter">{{ . }}</span>{{ end }}
-        {{- with .date }}<time class="highlight-date">{{ . }}</time>{{ end }}
-      </div>
+  <section class="book-section book-highlights" id="book-highlights">
+    <div class="book-section-heading"><h2>划线</h2><span>{{ len $highlights }} 条</span></div>
+    <div class="highlight-list">
+      {{- range $index, $highlight := $highlights }}
+      <article class="highlight-item" data-chapter="{{ $highlight.chapter | default "未分类" | htmlEscape }}">
+        <span class="highlight-index">{{ add $index 1 }}</span>
+        <div>
+          <blockquote>{{ $highlight.text }}</blockquote>
+          <div class="highlight-meta">
+            {{- with $highlight.chapter }}<span class="highlight-chapter">{{ . }}</span>{{ end }}
+            {{- with $highlight.date }}<time class="highlight-date">{{ . }}</time>{{ end }}
+          </div>
+        </div>
+      </article>
+      {{- end }}
     </div>
-    {{- end }}
   </section>
   {{- end }}
 
-  {{- $notes := .Params.notes }}
   {{- if $notes }}
-  <section class="book-notes">
-    <h2>想法 · {{ len $notes }}</h2>
-    {{- range $notes }}
-    <div class="note-item">
-      <p class="note-text">{{ .text }}</p>
-      <div class="note-meta">
-        {{- with .chapter }}<span class="note-chapter">{{ . }}</span>{{ end }}
-        {{- with .date }}<time class="note-date">{{ . }}</time>{{ end }}
-        {{- if .star }}<span class="note-star">★{{ .star }}</span>{{ end }}
-      </div>
+  <section class="book-section book-notes" id="book-notes">
+    <div class="book-section-heading"><h2>我的想法</h2><span>{{ len $notes }} 条</span></div>
+    <div class="note-list">
+      {{- range $index, $note := $notes }}
+      <article class="note-item" data-chapter="{{ $note.chapter | default "未分类" | htmlEscape }}">
+        <span class="highlight-index">{{ add $index 1 }}</span>
+        <div>
+          <p class="note-text">{{ $note.text }}</p>
+          <div class="note-meta">
+            {{- with $note.chapter }}<span class="note-chapter">{{ . }}</span>{{ end }}
+            {{- with $note.date }}<time class="note-date">{{ . }}</time>{{ end }}
+            {{- with $note.star }}<span class="note-star">★{{ . }}</span>{{ end }}
+          </div>
+        </div>
+      </article>
+      {{- end }}
     </div>
-    {{- end }}
   </section>
   {{- end }}
 
   {{- if and (not .Params.review_text) (not $highlights) (not $notes) }}
-  <div class="book-empty">
-    <p>暂无笔记和划线内容。</p>
-    <a href="{{ $wereadUrl | safeURL }}" target="_blank" rel="noopener noreferrer" class="weread-link">在微信读书中查看此书 →</a>
-  </div>
+  <div class="book-empty"><p>暂无笔记和划线内容。</p><a href="{{ $wereadUrl | safeURL }}" target="_blank" rel="noopener noreferrer" class="weread-link">在微信读书中查看此书 →</a></div>
   {{- end }}
 </article>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    function groupByChapter(listSelector, itemSelector, label) {
+      const list = document.querySelector(listSelector);
+      if (!list) return;
+      const items = Array.from(list.querySelectorAll(itemSelector));
+      const groups = new Map();
+      items.forEach(function (item) {
+        const chapter = item.dataset.chapter || '未分类';
+        if (!groups.has(chapter)) groups.set(chapter, []);
+        groups.get(chapter).push(item);
+      });
+      const fragment = document.createDocumentFragment();
+      groups.forEach(function (groupItems, chapter) {
+        const details = document.createElement('details');
+        details.className = 'book-chapter-group';
+        details.open = true;
+        const summary = document.createElement('summary');
+        summary.innerHTML = '<span>' + chapter + '</span><small>' + groupItems.length + ' ' + label + '</small>';
+        const content = document.createElement('div');
+        content.className = 'book-chapter-content';
+        groupItems.forEach(item => content.appendChild(item));
+        details.append(summary, content);
+        fragment.appendChild(details);
+      });
+      list.replaceChildren(fragment);
+    }
+    groupByChapter('.highlight-list', '.highlight-item', '条划线');
+    groupByChapter('.note-list', '.note-item', '条想法');
+  });
+</script>
 
 {{- end }}

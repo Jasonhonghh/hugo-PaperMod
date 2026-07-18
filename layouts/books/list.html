@@ -1,88 +1,230 @@
 {{- define "main" }}
 
-<header class="page-header">
-  <h1>{{ .Title }}</h1>
-  {{- if .Description }}
-  <div class="post-description">{{ .Description }}</div>
-  {{- end }}
-</header>
-
 {{- $books := .Pages.ByDate.Reverse }}
-{{- if not $books }}
-<div class="books-empty">
-  <p>暂无书籍数据，请稍后再来。</p>
-</div>
-{{- else }}
-<div class="books-grid">
-  {{- range $books }}
-  {{- $book := . }}
-  {{- $wereadUrl := .Params.weread_url | default (print "https://weread.qq.com/web/search/books?keyword=" (.Title | urlquery)) }}
-  <article class="book-card">
-    <a href="{{ .Permalink }}" class="book-cover-link" title="查看书籍详情">
-      {{- with .Params.cover.image }}
-      <div class="book-cover">
-        <img src="{{ . }}" alt="{{ $book.Title }}" loading="lazy">
-      </div>
-      {{- else }}
-      <div class="book-cover book-cover-placeholder">
-        <svg viewBox="0 0 120 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="120" height="160" fill="var(--tertiary)"/>
-          <text x="60" y="85" text-anchor="middle" fill="var(--secondary)" font-size="14">{{ substr .Title 0 3 }}</text>
-        </svg>
-      </div>
-      {{- end }}
-    </a>
-    <div class="book-info">
-      <div class="book-info-main">
-        <a href="{{ .Permalink }}" class="book-title-link" title="查看书籍详情">
-          <h2 class="book-title">{{ .Title }}</h2>
-        </a>
-        <div class="book-meta-line">
-          {{- with .Params.author }}<span>{{ . }}</span>{{- end }}
-          {{- with .Params.category }}<span>{{ . }}</span>{{- end }}
-          {{- with .Params.publisher }}<span>{{ . }}</span>{{- end }}
-        </div>
-        {{- if .Params.rating }}
-        <div class="book-rating">
-          {{- $ratingRaw := float .Params.rating }}
-          {{- $rating := cond (gt $ratingRaw 5.0) (div $ratingRaw 10.0) $ratingRaw }}
-          {{- range seq 5 }}
-          <span class="star{{ if le . $rating }} filled{{ end }}">★</span>
-          {{- end }}
-          <span class="rating-num">{{ printf "%.1f" $rating }}</span>
-        </div>
-        {{- end }}
-        {{- if .Params.reading_progress }}
-        <div class="book-progress">
-          <div class="progress-bar"><div class="progress-fill" style="width:{{ .Params.reading_progress }}%"></div></div>
-        </div>
-        {{- end }}
-        {{- if or .Params.read_time .Params.note_count .Params.review_count }}
-        <div class="book-stats">
-          {{- with .Params.read_time }}<span>{{ . }}</span>{{- end }}
-          {{- with .Params.note_count }}<span>{{ . }} 条划线</span>{{- end }}
-          {{- with .Params.review_count }}<span>{{ . }} 条想法</span>{{- end }}
-        </div>
-        {{- end }}
-        {{- if .Params.intro }}
-        <p class="book-excerpt">{{ .Params.intro }}</p>
-        {{- end }}
-      </div>
-      <div class="book-actions">
-        <a href="{{ .Permalink }}" class="book-detail-link">查看笔记</a>
-        <a href="{{ $wereadUrl | safeURL }}" target="_blank" rel="noopener noreferrer" class="book-weread-link" title="在微信读书中打开">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-            <polyline points="15 3 21 3 21 9"/>
-            <line x1="10" y1="14" x2="21" y2="3"/>
-          </svg>
-          微信读书
-        </a>
-      </div>
+{{- $total := len $books }}
+{{- $finished := 0 }}
+{{- $reading := 0 }}
+{{- $unread := 0 }}
+{{- $highlightTotal := 0 }}
+{{- $ratingTotal := 0.0 }}
+{{- $ratingCount := 0 }}
+{{- $categories := slice }}
+{{- range $books }}
+  {{- $progress := int (default 0 .Params.reading_progress) }}
+  {{- $highlights := default (slice) .Params.highlights }}
+  {{- if .Params.finished }}
+    {{- $finished = add $finished 1 }}
+  {{- else if gt $progress 0 }}
+    {{- $reading = add $reading 1 }}
+  {{- else }}
+    {{- $unread = add $unread 1 }}
+  {{- end }}
+  {{- $highlightTotal = add $highlightTotal (len $highlights) }}
+  {{- with .Params.rating }}
+    {{- $ratingTotal = add $ratingTotal (float .) }}
+    {{- $ratingCount = add $ratingCount 1 }}
+  {{- end }}
+  {{- with .Params.category }}
+    {{- if not (in $categories .) }}{{- $categories = $categories | append . }}{{- end }}
+  {{- end }}
+{{- end }}
+{{- $averageRating := 0.0 }}
+{{- if gt $ratingCount 0 }}{{- $averageRating = div $ratingTotal $ratingCount }}{{- end }}
+
+<div class="books-page" id="books-page">
+  <header class="books-page-header">
+    <div>
+      <p class="books-kicker">PERSONAL LIBRARY</p>
+      <h1>{{ .Title }}</h1>
+      {{- with .Description }}<p class="books-description">{{ . }}</p>{{ end }}
     </div>
-  </article>
+    <span class="books-result-count" id="books-result-count">{{ $total }} 本</span>
+  </header>
+
+  <section class="books-overview" aria-label="阅读统计">
+    <div class="books-stat">
+      <span class="books-stat-value">{{ $total }}</span>
+      <span class="books-stat-label">藏书</span>
+    </div>
+    <div class="books-stat">
+      <span class="books-stat-value">{{ $reading }}</span>
+      <span class="books-stat-label">在读</span>
+    </div>
+    <div class="books-stat">
+      <span class="books-stat-value">{{ $finished }}</span>
+      <span class="books-stat-label">已读</span>
+    </div>
+    <div class="books-stat">
+      <span class="books-stat-value">{{ $highlightTotal }}</span>
+      <span class="books-stat-label">划线</span>
+    </div>
+    <div class="books-stat books-stat-rating">
+      <span class="books-stat-value">{{ printf "%.1f" $averageRating }}</span>
+      <span class="books-stat-label">平均评分</span>
+    </div>
+  </section>
+
+  {{- if $books }}
+  <section class="books-toolbar" aria-label="筛选和搜索书籍">
+    <label class="books-search">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4 4"></path></svg>
+      <input id="books-search-input" type="search" placeholder="搜索书名、作者或分类" autocomplete="off">
+    </label>
+
+    <div class="books-filter-group" role="group" aria-label="阅读状态">
+      <button type="button" class="book-filter is-active" data-filter="all">全部</button>
+      <button type="button" class="book-filter" data-filter="reading">在读</button>
+      <button type="button" class="book-filter" data-filter="finished">已读</button>
+      <button type="button" class="book-filter" data-filter="unread">未读</button>
+    </div>
+
+    <div class="books-toolbar-selects">
+      <label class="books-select-label" for="books-category-select">分类</label>
+      <select id="books-category-select">
+        <option value="all">全部分类</option>
+        {{- range sort $categories }}<option value="{{ . | htmlEscape }}">{{ . }}</option>{{ end }}
+      </select>
+      <label class="books-select-label" for="books-sort-select">排序</label>
+      <select id="books-sort-select">
+        <option value="date">最近添加</option>
+        <option value="title">书名</option>
+        <option value="rating">评分</option>
+        <option value="progress">阅读进度</option>
+      </select>
+    </div>
+  </section>
+
+  <div class="books-grid" id="books-grid">
+    {{- range $books }}
+      {{- $book := . }}
+      {{- $progress := int (default 0 .Params.reading_progress) }}
+      {{- $highlights := default (slice) .Params.highlights }}
+      {{- $status := "unread" }}
+      {{- $statusLabel := "未读" }}
+      {{- if .Params.finished }}
+        {{- $status = "finished" }}
+        {{- $statusLabel = "已读" }}
+      {{- else if gt $progress 0 }}
+        {{- $status = "reading" }}
+        {{- $statusLabel = "在读" }}
+      {{- end }}
+      {{- $wereadUrl := .Params.weread_url | default (print "https://weread.qq.com/web/search/books?keyword=" (.Title | urlquery)) }}
+      <article class="book-card" data-book-card data-status="{{ $status }}" data-category="{{ .Params.category | default "" | htmlEscape }}" data-rating="{{ .Params.rating | default 0 }}" data-progress="{{ $progress }}" data-date="{{ .Date.Format "2006-01-02" }}">
+        <a href="{{ .Permalink }}" class="book-cover-link" title="查看《{{ .Title }}》详情">
+          {{- with .Params.cover.image }}
+          <div class="book-cover"><img src="{{ . }}" alt="{{ $book.Title }}" loading="lazy"></div>
+          {{- else }}
+          <div class="book-cover book-cover-placeholder">
+            <svg viewBox="0 0 120 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="120" height="160" fill="var(--tertiary)"/>
+              <text x="60" y="85" text-anchor="middle" fill="var(--secondary)" font-size="14">{{ substr $book.Title 0 3 }}</text>
+            </svg>
+          </div>
+          {{- end }}
+        </a>
+
+        <div class="book-info">
+          <div class="book-card-head">
+            <span class="book-status book-status-{{ $status }}">{{ $statusLabel }}</span>
+            <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+          </div>
+          <a href="{{ .Permalink }}" class="book-title-link" title="查看书籍详情"><h2 class="book-title">{{ .Title }}</h2></a>
+          <div class="book-meta-line">
+            {{- with .Params.author }}<span>{{ . }}</span>{{- end }}
+            {{- with .Params.category }}<span>{{ . }}</span>{{- end }}
+          </div>
+
+          {{- if .Params.rating }}
+          <div class="book-rating" aria-label="评分 {{ .Params.rating }}">
+            {{- $ratingRaw := float .Params.rating }}
+            {{- $rating := cond (gt $ratingRaw 5.0) (div $ratingRaw 10.0) $ratingRaw }}
+            {{- range seq 5 }}<span class="star{{ if le . $rating }} filled{{ end }}">★</span>{{ end }}
+            <span class="rating-num">{{ printf "%.1f" $rating }}</span>
+          </div>
+          {{- end }}
+
+          {{- if or (eq $status "reading") (eq $status "finished") }}
+          <div class="book-progress" aria-label="阅读进度 {{ $progress }}%">
+            <div class="progress-bar"><div class="progress-fill" style="width:{{ $progress }}%"></div></div>
+            <span class="progress-text">{{ $progress }}%</span>
+          </div>
+          {{- end }}
+
+          {{- if or .Params.note_count .Params.review_count (len $highlights) }}
+          <div class="book-stats">
+            {{- if len $highlights }}<span>{{ len $highlights }} 条划线</span>{{ end }}
+            {{- with .Params.note_count }}<span>{{ . }} 条想法</span>{{ end }}
+            {{- with .Params.review_count }}<span>{{ . }} 条书评</span>{{ end }}
+          </div>
+          {{- end }}
+          {{- with .Params.intro }}<p class="book-excerpt">{{ . }}</p>{{ end }}
+
+          <div class="book-actions">
+            <a href="{{ .Permalink }}" class="book-detail-link">查看详情</a>
+            <a href="{{ $wereadUrl | safeURL }}" target="_blank" rel="noopener noreferrer" class="book-weread-link" title="在微信读书中打开">微信读书 ↗</a>
+          </div>
+        </div>
+      </article>
+    {{- end }}
+  </div>
+  <div class="books-no-results" id="books-no-results" hidden>没有找到符合条件的书。</div>
+  {{- else }}
+  <div class="books-empty"><p>暂无书籍数据，请稍后再来。</p></div>
   {{- end }}
 </div>
+
+{{- if $books }}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const page = document.getElementById('books-page');
+    const grid = document.getElementById('books-grid');
+    if (!page || !grid) return;
+
+    const cards = Array.from(grid.querySelectorAll('[data-book-card]'));
+    const search = document.getElementById('books-search-input');
+    const category = document.getElementById('books-category-select');
+    const sort = document.getElementById('books-sort-select');
+    const resultCount = document.getElementById('books-result-count');
+    const noResults = document.getElementById('books-no-results');
+    let activeFilter = 'all';
+
+    function refreshBooks() {
+      const query = (search.value || '').trim().toLowerCase();
+      const selectedCategory = category.value;
+      const sorted = cards.slice().sort(function (a, b) {
+        const key = sort.value;
+        if (key === 'title') return a.querySelector('.book-title').textContent.localeCompare(b.querySelector('.book-title').textContent, 'zh-CN');
+        if (key === 'rating' || key === 'progress') return Number(b.dataset[key]) - Number(a.dataset[key]);
+        return b.dataset.date.localeCompare(a.dataset.date);
+      });
+
+      sorted.forEach(card => grid.appendChild(card));
+      let visible = 0;
+      cards.forEach(function (card) {
+        const matchesQuery = !query || card.textContent.toLowerCase().includes(query);
+        const matchesFilter = activeFilter === 'all' || card.dataset.status === activeFilter;
+        const matchesCategory = selectedCategory === 'all' || card.dataset.category === selectedCategory;
+        const shown = matchesQuery && matchesFilter && matchesCategory;
+        card.hidden = !shown;
+        if (shown) visible += 1;
+      });
+      noResults.hidden = visible !== 0;
+      resultCount.textContent = visible + ' 本';
+    }
+
+    page.querySelectorAll('[data-filter]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        activeFilter = button.dataset.filter;
+        page.querySelectorAll('[data-filter]').forEach(item => item.classList.toggle('is-active', item === button));
+        refreshBooks();
+      });
+    });
+    search.addEventListener('input', refreshBooks);
+    category.addEventListener('change', refreshBooks);
+    sort.addEventListener('change', refreshBooks);
+    refreshBooks();
+  });
+</script>
 {{- end }}
 
 {{- end }}
