@@ -55,40 +55,41 @@
     align-items: center;
     flex: 0 0 auto;
     gap: 0.35rem;
-    min-height: 32px;
-    padding: 0.36rem 0.65rem;
-    border: 1px solid var(--border);
-    border-radius: 0.45rem;
+    min-height: 28px;
+    padding: 0.28rem 0.4rem 0.4rem;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
     background: transparent;
     color: var(--secondary);
     font: inherit;
-    font-size: 0.74rem;
+    font-size: 0.68rem;
     line-height: 1;
     cursor: pointer;
-    transition: border-color 0.16s ease, background-color 0.16s ease, color 0.16s ease;
+    transition: border-color 0.16s ease, color 0.16s ease;
 }
 
 .activity-tab small {
-    min-width: 1.1rem;
-    padding: 0.16rem 0.25rem;
-    border-radius: 99px;
-    background: var(--code-bg);
+    min-width: 0;
+    padding: 0;
+    background: transparent;
     color: var(--secondary);
-    font-size: 0.62rem;
+    font-size: 0.58rem;
     line-height: 1;
     text-align: center;
+    opacity: 0.72;
 }
 
 .activity-tab:hover,
 .activity-tab.active {
-    border-color: var(--primary);
-    background: var(--code-bg);
+    border-bottom-color: var(--primary);
+    background: transparent;
     color: var(--primary);
 }
 
 .activity-tab.active small {
-    background: var(--primary);
-    color: var(--theme);
+    color: var(--primary);
+    opacity: 1;
 }
 
 .activity-list {
@@ -107,7 +108,7 @@
 .activity-card {
     position: relative;
     display: grid;
-    grid-template-columns: 28px auto minmax(0, 1fr) 18px;
+    grid-template-columns: auto minmax(0, 1fr) 18px;
     align-items: start;
     gap: 0.7rem;
     width: 100%;
@@ -123,39 +124,6 @@
 .activity-card:hover {
     border-radius: 0.55rem;
     background: color-mix(in srgb, var(--entry) 72%, transparent);
-}
-
-.activity-platform-mark {
-    display: grid;
-    width: 28px;
-    height: 28px;
-    place-items: center;
-    border-radius: 0.5rem;
-    background: var(--code-bg);
-    color: var(--primary);
-    font-size: 0.62rem;
-    font-weight: 700;
-    letter-spacing: -0.04em;
-}
-
-.activity-platform-github .activity-platform-mark {
-    background: #24292f;
-    color: #fff;
-}
-
-.activity-platform-douban .activity-platform-mark {
-    background: #00b51d;
-    color: #fff;
-}
-
-.activity-platform-bilibili .activity-platform-mark {
-    background: #00aeec;
-    color: #fff;
-}
-
-.activity-platform-weread .activity-platform-mark {
-    background: #fa9d3b;
-    color: #fff;
 }
 
 .activity-thumb {
@@ -219,6 +187,21 @@
     color: var(--primary);
     font-weight: 600;
 }
+
+.activity-kicker .activity-source::before {
+    content: "";
+    display: inline-block;
+    width: 0.38rem;
+    height: 0.38rem;
+    margin: 0 0.32rem 0.04rem 0;
+    border-radius: 50%;
+    background: var(--secondary);
+}
+
+.activity-platform-github .activity-source::before { background: #24292f; }
+.activity-platform-douban .activity-source::before { background: #00b51d; }
+.activity-platform-bilibili .activity-source::before { background: #00aeec; }
+.activity-platform-weread .activity-source::before { background: #fa9d3b; }
 
 .activity-title {
     display: -webkit-box;
@@ -312,16 +295,9 @@
     }
 
     .activity-card {
-        grid-template-columns: 24px 54px minmax(0, 1fr) 14px;
+        grid-template-columns: 54px minmax(0, 1fr) 14px;
         gap: 0.55rem;
         padding: 0.75rem 0;
-    }
-
-    .activity-platform-mark {
-        width: 24px;
-        height: 24px;
-        border-radius: 0.4rem;
-        font-size: 0.56rem;
     }
 
     .activity-thumb,
@@ -354,13 +330,8 @@
 
 @media (max-width: 420px) {
     .activity-card {
-        grid-template-columns: 22px 46px minmax(0, 1fr) 10px;
+        grid-template-columns: 46px minmax(0, 1fr) 10px;
         gap: 0.45rem;
-    }
-
-    .activity-platform-mark {
-        width: 22px;
-        height: 22px;
     }
 
     .activity-thumb,
