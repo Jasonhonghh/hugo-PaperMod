@@ -1,7 +1,6 @@
 {{- define "main" }}
 
 {{- $books := .Pages.ByDate.Reverse }}
-{{- $total := len $books }}
 {{- $categories := slice }}
 {{- range $books }}
   {{- with .Params.category }}
@@ -12,11 +11,9 @@
 <div class="books-page" id="books-page">
   <header class="books-page-header">
     <div>
-      <p class="books-kicker">READING NOTES</p>
       <h1 class="section-title-hidden">{{ .Title }}</h1>
       {{- with .Description }}<p class="books-description">{{ . }}</p>{{ end }}
     </div>
-    <span class="books-result-count" id="books-result-count">{{ $total }} 本</span>
   </header>
 
   {{- if $books }}
@@ -139,7 +136,6 @@
     const search = document.getElementById('books-search-input');
     const category = document.getElementById('books-category-select');
     const sort = document.getElementById('books-sort-select');
-    const resultCount = document.getElementById('books-result-count');
     const noResults = document.getElementById('books-no-results');
     let activeFilter = 'all';
 
@@ -165,7 +161,6 @@
         if (shown) visible += 1;
       });
       noResults.hidden = visible !== 0;
-      resultCount.textContent = visible + ' 本';
     }
 
     page.querySelectorAll('[data-filter]').forEach(function (button) {
