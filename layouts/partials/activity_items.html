@@ -1,13 +1,25 @@
 {{- $activity := .activity -}}
 {{- $platform := .platform | default "all" -}}
 {{- $limit := .limit | default 8 -}}
+{{- $ctx := .context -}}
 {{- $count := 0 -}}
 {{- range $item := $activity.activities -}}
 {{- if and (or (eq $platform "all") (eq $item.platform $platform)) (lt $count $limit) -}}
 {{- $itemURL := $item.url -}}
 {{- $summary := $item.summary -}}
-{{- if and (eq $item.platform "douban") $item.comment -}}
-{{- $summary = printf "我的想法：%s" $item.comment -}}
+{{- if eq $item.platform "douban" -}}
+{{- $summary = "" -}}
+{{- with $item.comment }}{{- $summary = printf "“%s”" . -}}{{- end -}}
+{{- else if eq $item.platform "weread" -}}
+{{- $summary = "" -}}
+{{- $bookPages := where $ctx.Site.RegularPages "Section" "books" -}}
+{{- $itemTitle := lower $item.title -}}
+{{- range $bookPages -}}
+{{- $bookTitle := lower .Title -}}
+{{- if and (eq $summary "") (or (eq $bookTitle $itemTitle) (hasPrefix $bookTitle $itemTitle) (hasPrefix $itemTitle $bookTitle)) -}}
+{{- $summary = .Params.intro | default "" -}}
+{{- end -}}
+{{- end -}}
 {{- end -}}
 {{- if eq $item.platform "weread" -}}
 {{- $itemURL = ($item.url | safeURL) -}}

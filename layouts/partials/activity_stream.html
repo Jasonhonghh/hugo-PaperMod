@@ -29,19 +29,19 @@
     </div>
 
     <div class="activity-list active" id="activity-panel-all" role="tabpanel" aria-labelledby="activity-tab-all" data-platform="all">
-        {{- partial "activity_items.html" (dict "activity" $activity "platform" "all" "limit" $allLimit) -}}
+        {{- partial "activity_items.html" (dict "activity" $activity "platform" "all" "limit" $allLimit "context" $ctx) -}}
     </div>
     <div class="activity-list" id="activity-panel-github" role="tabpanel" aria-labelledby="activity-tab-github" data-platform="github" hidden>
-        {{- partial "activity_items.html" (dict "activity" $activity "platform" "github" "limit" $platformLimit) -}}
+        {{- partial "activity_items.html" (dict "activity" $activity "platform" "github" "limit" $platformLimit "context" $ctx) -}}
     </div>
     <div class="activity-list" id="activity-panel-douban" role="tabpanel" aria-labelledby="activity-tab-douban" data-platform="douban" hidden>
-        {{- partial "activity_items.html" (dict "activity" $activity "platform" "douban" "limit" $platformLimit) -}}
+        {{- partial "activity_items.html" (dict "activity" $activity "platform" "douban" "limit" $platformLimit "context" $ctx) -}}
     </div>
     <div class="activity-list" id="activity-panel-bilibili" role="tabpanel" aria-labelledby="activity-tab-bilibili" data-platform="bilibili" hidden>
-        {{- partial "activity_items.html" (dict "activity" $activity "platform" "bilibili" "limit" $platformLimit) -}}
+        {{- partial "activity_items.html" (dict "activity" $activity "platform" "bilibili" "limit" $platformLimit "context" $ctx) -}}
     </div>
     <div class="activity-list" id="activity-panel-weread" role="tabpanel" aria-labelledby="activity-tab-weread" data-platform="weread" hidden>
-        {{- partial "activity_items.html" (dict "activity" $activity "platform" "weread" "limit" $platformLimit) -}}
+        {{- partial "activity_items.html" (dict "activity" $activity "platform" "weread" "limit" $platformLimit "context" $ctx) -}}
     </div>
 </section>
 
