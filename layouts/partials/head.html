@@ -91,7 +91,7 @@
 
 {{- /* Favicons */}}
 {{- with site.Params.assets.favicon }}
-<link rel="icon" href="{{ . | absURL }}" type="image/svg+xml">
+<link rel="icon" href="{{ . | absURL }}" type="image/png">
 {{- end }}
 <meta name="theme-color" content="{{ site.Params.assets.theme_color | default "#2e2e33" }}">
 <meta name="msapplication-TileColor" content="{{ site.Params.assets.msapplication_TileColor | default "#2e2e33" }}">
