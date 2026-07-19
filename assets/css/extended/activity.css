@@ -7,37 +7,6 @@
     padding-top: 0.2rem;
 }
 
-.activity-section-heading {
-    display: flex;
-    align-items: end;
-    justify-content: space-between;
-    gap: 1.5rem;
-    margin-bottom: 0.9rem;
-}
-
-.activity-section-kicker {
-    margin: 0 0 0.3rem;
-    color: var(--secondary);
-    font-size: 0.64rem;
-    letter-spacing: 0.14em;
-    line-height: 1;
-}
-
-.activity-section-heading h2,
-.activity-section-heading h3 {
-    margin: 0;
-    color: var(--primary);
-    font-size: 1.05rem;
-    font-weight: 650;
-    line-height: 1.35;
-}
-
-.activity-update-time {
-    color: var(--secondary);
-    font-size: 0.7rem;
-    white-space: nowrap;
-}
-
 .activity-tabs {
     display: flex;
     gap: 0.35rem;
@@ -283,17 +252,6 @@
 @media (max-width: 768px) {
     .activity-section {
         margin-top: 2.3rem;
-    }
-
-    .activity-section-heading {
-        align-items: start;
-        flex-direction: column;
-        gap: 0.4rem;
-        margin-bottom: 0.75rem;
-    }
-
-    .activity-update-time {
-        font-size: 0.66rem;
     }
 
     .activity-card {

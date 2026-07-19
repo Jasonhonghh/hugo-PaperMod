@@ -1,10 +1,11 @@
 .nav {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
     max-width: calc(var(--nav-width) + var(--gap) * 2);
     margin-inline-start: auto;
     margin-inline-end: auto;
+    padding: 0 var(--gap);
     line-height: var(--header-height);
 }
 
@@ -15,11 +16,14 @@
 .logo,
 #menu {
     display: flex;
-    margin: auto var(--gap);
 }
 
 .logo {
+    grid-column: 1;
+    justify-self: start;
     flex-wrap: inherit;
+    align-items: center;
+    margin: 0;
 }
 
 .logo a {
@@ -51,6 +55,10 @@ body:not(.dark) #sun {
 }
 
 #menu {
+    grid-column: 2;
+    justify-self: center;
+    align-items: center;
+    margin: 0;
     list-style: none;
     word-break: keep-all;
     overflow-x: auto;
@@ -58,7 +66,7 @@ body:not(.dark) #sun {
 }
 
 #menu li + li {
-    margin-inline-start: var(--gap);
+    margin-inline-start: 1.25rem;
 }
 
 #menu a {

@@ -53,13 +53,6 @@
 {{- partial "home_info.html" . }}
 {{- end }}
 
-{{- if .IsHome }}
-<header class="home-section-heading home-posts-heading">
-  <h2>{{ if eq $paginator.PageNumber 1 }}最新文章{{ else }}更多文章{{ end }}</h2>
-  <span>第 {{ $paginator.PageNumber }} / {{ $paginator.TotalPages }} 页</span>
-</header>
-{{- end }}
-
 {{- $term := .Data.Term }}
 {{- range $index, $page := $paginator.Pages }}
 

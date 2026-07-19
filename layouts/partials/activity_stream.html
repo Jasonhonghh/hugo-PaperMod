@@ -10,14 +10,6 @@
 {{- $wereadCount := len (where $activity.activities "platform" "weread") -}}
 
 <section class="activity-section">
-    <header class="activity-section-heading">
-        <div>
-            <p class="activity-section-kicker">ACTIVITY STREAM</p>
-            {{- if eq $heading "h3" }}<h3>最近动态</h3>{{ else }}<h2>最近动态</h2>{{ end }}
-        </div>
-        <span class="activity-update-time">更新于 {{ $activity.last_updated }}</span>
-    </header>
-
     <div class="activity-tabs" role="tablist" aria-label="动态平台">
         <button class="activity-tab active" id="activity-tab-all" type="button" role="tab" aria-selected="true" aria-controls="activity-panel-all" data-platform="all">
             <span>全部</span><small>{{ len $activity.activities }}</small>

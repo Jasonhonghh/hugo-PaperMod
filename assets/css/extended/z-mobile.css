@@ -152,8 +152,16 @@
    =========================================== */
 @media (max-width: 768px) {
     .nav {
+        display: flex;
         flex-wrap: wrap;
+        justify-content: center;
         padding: 0 var(--gap);
+    }
+
+    .logo {
+        justify-content: center;
+        width: 100%;
+        margin: 0;
     }
 
     #menu {
