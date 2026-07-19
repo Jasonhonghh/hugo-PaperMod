@@ -13,7 +13,7 @@
   <header class="books-page-header">
     <div>
       <p class="books-kicker">READING NOTES</p>
-      <h1>{{ .Title }}</h1>
+      <h1 class="section-title-hidden">{{ .Title }}</h1>
       {{- with .Description }}<p class="books-description">{{ . }}</p>{{ end }}
     </div>
     <span class="books-result-count" id="books-result-count">{{ $total }} 本</span>
