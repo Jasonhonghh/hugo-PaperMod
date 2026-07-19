@@ -319,12 +319,13 @@
 }
 
 .paginav {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 2rem;
-    margin-top: 2rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+    padding: 0;
     border: 0;
-    border-radius: 0;
     background: transparent;
 }
 
@@ -373,10 +374,12 @@ h6:hover .anchor {
 
 .paginav a {
     display: flex;
+    flex: 0 1 48%;
     min-width: 0;
     flex-direction: column;
     gap: 0.28rem;
-    padding: 0.45rem 0;
+    max-width: 48%;
+    padding: 0;
     border: 0;
     border-radius: 0;
     background: transparent;
@@ -389,11 +392,6 @@ h6:hover .anchor {
     letter-spacing: 0.04em;
     font-size: 0.72rem;
     color: var(--secondary);
-}
-
-.paginav .prev,
-.paginav .next {
-    width: 50%;
 }
 
 .paginav a:hover .title {
