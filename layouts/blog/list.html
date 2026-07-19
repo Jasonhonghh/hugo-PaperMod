@@ -1,0 +1,39 @@
+{{- define "main" }}
+
+{{- $pages := where site.RegularPages "Type" "in" site.Params.mainSections }}
+{{- $pages = where $pages "Params.hiddenInHomeList" "!=" "true" }}
+{{- $pages = $pages.ByDate.Reverse }}
+{{- $paginator := .Paginate $pages }}
+
+<div class="list-page blog-page">
+  <header class="blog-page-header">
+    <p class="blog-kicker">WRITING NOTES</p>
+    <h1>{{ .Title }}</h1>
+    {{- with .Description }}<p class="blog-description">{{ . }}</p>{{ end }}
+  </header>
+
+  <div class="blog-post-list">
+    {{- range $paginator.Pages }}
+    <article class="post-entry blog-post-entry">
+      <header class="entry-header">
+        <h2 class="entry-hint-parent"><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
+      </header>
+      <time class="blog-entry-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+      <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
+    </article>
+    {{- end }}
+  </div>
+
+  {{- if gt $paginator.TotalPages 1 }}
+  <footer class="page-footer blog-page-footer">
+    <nav class="pagination">
+      {{- if $paginator.HasPrev }}<a class="prev" href="{{ $paginator.Prev.URL | absURL }}">← 上一页</a>{{ end }}
+      {{- if $paginator.HasNext }}<a class="next" href="{{ $paginator.Next.URL | absURL }}">下一页 →</a>{{ end }}
+    </nav>
+  </footer>
+  {{- end }}
+</div>
+
+{{- partial "home_activity.html" . }}
+
+{{- end }}
