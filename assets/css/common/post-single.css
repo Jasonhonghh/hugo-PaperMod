@@ -312,11 +312,20 @@
 }
 
 .post-tags a,
-.share-buttons,
-.paginav {
+.share-buttons {
     border-radius: var(--radius);
     background: var(--code-bg);
     border: 1px solid var(--border);
+}
+
+.paginav {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 2rem;
+    margin-top: 2rem;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
 }
 
 .post-tags a {
@@ -328,8 +337,7 @@
     background: var(--code-bg);
 }
 
-.post-tags a:hover,
-.paginav a:hover {
+.post-tags a:hover {
     background: var(--border);
 }
 
@@ -363,21 +371,23 @@ h6:hover .anchor {
     user-select: none;
 }
 
-.paginav {
-    display: flex;
-    line-height: 30px;
-}
-
 .paginav a {
-    padding-inline-start: 14px;
-    padding-inline-end: 14px;
-    border-radius: var(--radius);
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 0.28rem;
+    padding: 0.45rem 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--primary);
+    line-height: 1.45;
+    text-decoration: none;
 }
 
 .paginav .title {
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    font-size: small;
+    letter-spacing: 0.04em;
+    font-size: 0.72rem;
     color: var(--secondary);
 }
 
@@ -386,13 +396,27 @@ h6:hover .anchor {
     width: 50%;
 }
 
-.paginav span:hover:not(.title) {
-    box-shadow: 0 1px 0;
+.paginav a:hover .title {
+    color: var(--primary);
 }
 
 .paginav .next {
     margin-inline-start: auto;
     text-align: right;
+}
+
+.paginav a > span:not(.title) {
+    overflow: hidden;
+    color: var(--primary);
+    font-size: 0.88rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.paginav a:hover > span:not(.title) {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
 }
 
 [dir="rtl"] .paginav .next {

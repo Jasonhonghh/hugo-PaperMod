@@ -310,6 +310,7 @@
    =========================================== */
 @media (max-width: 768px) {
     .paginav {
+        grid-template-columns: 1fr;
         flex-direction: column;
         gap: 10px;
     }
@@ -317,7 +318,11 @@
     .paginav .prev,
     .paginav .next {
         width: 100%;
-        text-align: center;
+        text-align: start;
+    }
+
+    .paginav .next {
+        text-align: end;
     }
 }
 
