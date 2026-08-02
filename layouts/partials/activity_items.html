@@ -20,6 +20,9 @@
 {{- $summary = .Params.intro | default "" -}}
 {{- end -}}
 {{- end -}}
+{{- if eq $summary "" -}}
+{{- $summary = $item.intro | default "" -}}
+{{- end -}}
 {{- end -}}
 {{- if eq $item.platform "weread" -}}
 {{- $itemURL = ($item.url | safeURL) -}}
