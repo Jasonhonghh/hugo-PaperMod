@@ -36,6 +36,17 @@
     text-indent: 2em;
 }
 
+/* Per-article layout variants. Add new contentStyle values here as the
+   editorial system grows; standard remains the backwards-compatible default. */
+.post-content--letter p,
+.post-content--no-indent p {
+    text-indent: 0;
+}
+
+.post-content--letter {
+    text-align: start;
+}
+
 .post-content li p,
 .post-content blockquote p {
     text-indent: 0;

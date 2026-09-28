@@ -38,8 +38,13 @@
             {{- partial "toc.html" . }}
             {{- end }}
 
+            {{- $contentStyle := lower (.Param "contentStyle" | default "standard") -}}
+            {{- $contentClass := printf "post-content--%s" ($contentStyle | urlize) -}}
+            {{- if and (isset .Params "paragraphIndent") (not (.Param "paragraphIndent")) -}}
+            {{- $contentClass = printf "%s post-content--no-indent" $contentClass -}}
+            {{- end -}}
             {{- if .Content }}
-            <div class="post-content">
+            <div class="post-content {{ $contentClass }}" data-content-style="{{ $contentStyle | htmlEscape }}">
                 {{- if not (.Param "disableAnchoredHeadings") }}
                 {{- partial "anchored_headings.html" .Content -}}
                 {{- else }}{{ .Content }}{{ end }}
