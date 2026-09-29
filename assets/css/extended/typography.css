@@ -44,7 +44,49 @@
 }
 
 .post-content--letter {
+    line-height: 1.82;
     text-align: start;
+}
+
+.letter-opening {
+    margin: 0 0 2.25rem;
+}
+
+.letter-opening p {
+    margin: 0;
+    line-height: 1.9;
+}
+
+.letter-recipient {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.letter-greeting {
+    color: var(--secondary);
+}
+
+.letter-closing {
+    width: fit-content;
+    max-width: 100%;
+    margin: 3.25rem 0 0 auto;
+    text-align: end;
+}
+
+.letter-closing p {
+    margin: 0;
+    line-height: 1.85;
+}
+
+.letter-signature {
+    display: grid;
+    justify-items: end;
+    margin-top: 0.35rem !important;
+    color: var(--secondary);
+}
+
+.letter-signature time {
+    font-size: 0.86em;
 }
 
 .post-content li p,

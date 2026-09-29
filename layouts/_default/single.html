@@ -45,7 +45,9 @@
             {{- end -}}
             {{- if .Content }}
             <div class="post-content {{ $contentClass }}" data-content-style="{{ $contentStyle | htmlEscape }}">
-                {{- if not (.Param "disableAnchoredHeadings") }}
+                {{- if eq $contentStyle "letter" }}
+                {{- partial "letter_content.html" . }}
+                {{- else if not (.Param "disableAnchoredHeadings") }}
                 {{- partial "anchored_headings.html" .Content -}}
                 {{- else }}{{ .Content }}{{ end }}
             </div>

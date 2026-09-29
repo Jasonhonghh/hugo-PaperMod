@@ -1,0 +1,38 @@
+{{- $recipient := .Param "letterRecipient" | default "" -}}
+{{- if not $recipient -}}
+  {{- $inferredRecipient := replaceRE "^写给(.+?)([（(][^）)]*[）)])?$" "$1" .Title | strings.TrimSpace -}}
+  {{- if ne $inferredRecipient .Title -}}
+    {{- $recipient = $inferredRecipient -}}
+  {{- end -}}
+{{- end -}}
+{{- $greeting := .Param "letterGreeting" | default "展信佳" -}}
+{{- $closing := .Param "letterClosing" | default "祝好" -}}
+{{- $signature := .Param "letterSignature" | default .Params.author | default site.Params.author -}}
+{{- $letterDate := .Param "letterDate" | default (.Date.Format "2006-01-02") -}}
+{{- $showFooter := true -}}
+{{- if isset .Params "letterFooter" -}}
+  {{- $showFooter = .Param "letterFooter" -}}
+{{- end -}}
+
+<header class="letter-opening">
+  {{- with $recipient }}<p class="letter-recipient">{{ . }}：</p>{{ end -}}
+  {{- with $greeting }}<p class="letter-greeting">{{ . }}</p>{{ end -}}
+</header>
+
+{{- if not (.Param "disableAnchoredHeadings") -}}
+  {{- partial "anchored_headings.html" .Content -}}
+{{- else -}}
+  {{- .Content -}}
+{{- end -}}
+
+{{- if $showFooter -}}
+<footer class="letter-closing">
+  {{- with $closing }}<p class="letter-closing-words">{{ . }}</p>{{ end -}}
+  {{- if or $signature $letterDate -}}
+  <p class="letter-signature">
+    {{- with $signature }}<span>{{ . }}</span>{{ end -}}
+    {{- with $letterDate }}<time datetime="{{ $.Date.Format "2006-01-02" }}">{{ . }}</time>{{ end -}}
+  </p>
+  {{- end -}}
+</footer>
+{{- end -}}
