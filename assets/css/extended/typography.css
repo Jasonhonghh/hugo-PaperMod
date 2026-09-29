@@ -38,7 +38,6 @@
 
 /* Per-article layout variants. Add new contentStyle values here as the
    editorial system grows; standard remains the backwards-compatible default. */
-.post-content--letter p,
 .post-content--no-indent p {
     text-indent: 0;
 }
@@ -55,6 +54,7 @@
 .letter-opening p {
     margin: 0;
     line-height: 1.9;
+    text-indent: 0;
 }
 
 .letter-recipient {
@@ -76,6 +76,7 @@
 .letter-closing p {
     margin: 0;
     line-height: 1.85;
+    text-indent: 0;
 }
 
 .letter-signature {
